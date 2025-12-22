@@ -1,4 +1,4 @@
-package com.example.teaching_management;
+package com.example.teachingmanagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
