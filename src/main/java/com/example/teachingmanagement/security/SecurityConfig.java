@@ -16,16 +16,31 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+            // Disable CSRF for REST API usage
             .csrf(csrf -> csrf.disable())
+
+            // Allow H2 console to be displayed in browser (uses iframes)
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+
+            // Authorization rules
             .authorizeHttpRequests(auth -> auth
+                // Allow H2 console (development only)
+                .requestMatchers("/h2/**").permitAll()
+
+                // Allow user creation without authentication
+                .requestMatchers("/api/users").permitAll()
+
+                // Secure all other endpoints
                 .anyRequest().authenticated()
             )
+
+            // Use HTTP Basic authentication
             .httpBasic();
 
         return http.build();
     }
 
-    // ✅ Password hashing (VERY IMPORTANT)
+    // Password hashing using BCrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
