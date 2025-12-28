@@ -1,0 +1,63 @@
+package com.example.teachingmanagement.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.teachingmanagement.model.Report;
+import com.example.teachingmanagement.service.ReportService;
+
+@RestController
+@RequestMapping("/api/reports")
+public class ReportController {
+
+    private final ReportService service;
+
+    public ReportController(ReportService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public Report create(@RequestBody Report report) {
+        return service.save(report);
+    }
+
+    @GetMapping
+    public List<Report> getAll() {
+        return service.findAll();
+    }
+
+    /**
+     * Create a report for a specific task and solver
+     * PathVariable is used to extract values from the URL path and convert them into Long parameters
+     * @param taskId
+     * @param solverId
+     * @param report
+     * @return
+     */
+    @PostMapping("/task/{taskId}/solver/{solverId}")
+    public Report createReportForTask(@PathVariable Long taskId, @PathVariable Long solverId, @RequestBody Report report) {
+        return service.createReportForTask(taskId, solverId, report);
+    }
+
+
+    /**
+     * Get reports by solver and task
+     * PathVariable is used to extract values from the URL path and convert them into Long parameters
+     * @return
+     */
+    @GetMapping("/solver/{solverId}")
+    public List<Report> getReportsBySolver(@PathVariable Long solverId) {
+        return service.findBySolver(solverId);
+    }
+
+    @GetMapping("/task/{taskId}")
+    public List<Report> getReportsByTask(@PathVariable Long taskId) {
+        return service.findByTask(taskId);
+    }
+}

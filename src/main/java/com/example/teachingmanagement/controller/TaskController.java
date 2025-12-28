@@ -3,6 +3,7 @@ package com.example.teachingmanagement.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,4 +31,16 @@ public class TaskController {
     public List<Task> getAll() {
         return service.findAll();
     }
+
+    /**
+     * Create a task for a specific activity
+     * PathVariable is used to extract values from the URL path and convert them into Long parameters
+     * @param activityId
+     * @param task
+     * @return
+     */
+    @PostMapping("/activity/{activityId}")
+    public Task createTaskForActivity( @PathVariable Long activityId, @RequestBody Task task) {
+        return service.createTaskForActivity(activityId, task);
+}
 }

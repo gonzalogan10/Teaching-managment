@@ -21,8 +21,11 @@ a minimal but fully functional backend that demonstrates the core concept of the
 - In-memory database (H2)
 - Entity model:
   - `Course`
-  - `Activity`
-  - `Task`
+  - `Activity` (updated)
+  - `Task` (updated to include a list of solvers and a main solver)
+  - `Solver` (new)
+  - `Report` (new)
+
 - Basic user management:
   - `User` entity
   - Roles: `TEACHER`, `STUDENT`
@@ -32,6 +35,10 @@ a minimal but fully functional backend that demonstrates the core concept of the
   - Password hashing using BCrypt
 
 ---
+## Test (new)
+ - For repositories
+ - For the domain
+
 
 ## Technologies Used
 
@@ -150,5 +157,16 @@ SELECT * FROM USERS;
 SELECT * FROM COURSE;
 SELECT * FROM ACTIVITY;
 SELECT * FROM TASK;
+SELECT * FROM SOLVER;
+SELECT * FROM TASK_SOLVERS;
+SELECT * FROM REPORT;
 
 The H2 console is enabled for development only and explicitly allowed in the security configuration.
+
+### NEW Endpoints 
+- Solver Endpoints
+POST /api/solvers → Create a new solver
+GET /api/solvers → Find all solvers
+POST /api/solvers/{solverId}/solver/{taskId} → adds a solver to a task in the solver list if it is not already present
+POST /api/solvers/{solverId}/main-solver/{taskId} → Assign a solver as main solver for a task (adds to list if not already present)
+- Report Endpoints

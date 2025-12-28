@@ -34,6 +34,12 @@ public class Activity {
     public Activity() {
     }
 
+    public Activity(String name, ActivityType type, Course course) {
+        this.name = name;
+        this.type = type;
+        this.course = course;
+    }
+
     // 🔹 GETTERS & SETTERS
     public Long getId() {
         return id;

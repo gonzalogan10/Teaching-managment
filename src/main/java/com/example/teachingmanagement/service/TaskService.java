@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.teachingmanagement.model.Activity;
 import com.example.teachingmanagement.model.Task;
 import com.example.teachingmanagement.repository.TaskRepository;
 
@@ -12,9 +13,11 @@ import com.example.teachingmanagement.repository.TaskRepository;
 public class TaskService {
 
     private final TaskRepository repository;
+    private final ActivityService activityService;
 
-    public TaskService(TaskRepository repository) {
+    public TaskService(TaskRepository repository, ActivityService activityService) {
         this.repository = repository;
+        this.activityService = activityService;
     }
 
     public Task save(Task task) {
@@ -24,4 +27,15 @@ public class TaskService {
     public List<Task> findAll() {
         return repository.findAll();
     }
+
+    public Task createTaskForActivity(Long activityId, Task task) {
+        Activity activity = activityService.findById(activityId);
+        task.setActivity(activity);
+        return repository.save(task);
+    }
+
+   public Task findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+   }
 }

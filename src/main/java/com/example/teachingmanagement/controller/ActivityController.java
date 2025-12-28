@@ -25,4 +25,16 @@ public class ActivityController {
     public List<Activity> getAll() {
         return service.findAll();
     }
+
+    /**
+     * Create an activity for a specific course
+     * PathVariable is used to extract values from the URL path and convert them into Long parameters.
+     * @param courseId ID of the course for which the activity will be created
+     * @param activity Activity to be created
+     * @return
+     */
+    @PostMapping("/course/{courseId}")
+    public Activity createActivityForCourse(@PathVariable Long courseId, @RequestBody Activity activity) {
+        return service.createActivityForCourse(courseId, activity);
+    }
 }

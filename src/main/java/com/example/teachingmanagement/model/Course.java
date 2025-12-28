@@ -18,6 +18,11 @@ public class Course {
     public Course() {
     }
 
+    public Course(String name, String code) {
+        this.name = name;
+        this.code = code;
+    }
+
     public Long getId() {
         return id;
     }

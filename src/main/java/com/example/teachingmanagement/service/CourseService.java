@@ -22,4 +22,9 @@ public class CourseService {
     public List<Course> findAll() {
         return repository.findAll();
     }
+
+    public Course findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+    }
 }

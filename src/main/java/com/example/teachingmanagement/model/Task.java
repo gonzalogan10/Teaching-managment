@@ -1,12 +1,15 @@
 package com.example.teachingmanagement.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -28,8 +31,28 @@ public class Task {
     @ManyToOne
     private Activity activity;
 
+    @ManyToMany
+    private List<Solver> solvers = new ArrayList<>();
+
+    @ManyToOne
+    private Solver mainSolver;
+
     // 🔹 CONSTRUCTEUR VIDE (OBLIGATOIRE)
     public Task() {
+    }
+
+    public Task(String title, Activity activity) {
+        this.title = title;
+        this.activity = activity;
+    }
+
+    public Task(int taskOrder, String title, String description, LocalDate startDate, LocalDate endDate, Activity activity) {
+        this.taskOrder = taskOrder;
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.activity = activity;
     }
 
     // 🔹 GETTERS & SETTERS
@@ -88,4 +111,35 @@ public class Task {
     public void setActivity(Activity activity) {
         this.activity = activity;
     }
+
+    public List<Solver> getSolvers() {
+        return solvers;
+    }
+
+    public void setSolvers(List<Solver> solvers) {
+        this.solvers = solvers;
+    }
+
+    public Solver getMainSolver() {
+        return mainSolver;
+    }
+
+    public void setMainSolver(Solver mainSolver) {
+        this.mainSolver = mainSolver;
+    }
+
+    /**
+     * Add a solver to the task if not already present
+     * @param solver
+     * @return true if the solver was added, false otherwise
+     */
+    public boolean addSolver(Solver solver) {
+        if(this.solvers.contains(solver) || solver == null) {
+        return false;
+    }
+    this.solvers.add(solver);
+    return true;
+}
+
+
 }
