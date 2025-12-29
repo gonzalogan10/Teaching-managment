@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,15 @@ class ActivityRepositoryTest {
     @Autowired
     private ActivityRepository activityRepository;
 
+    private Course course;
+
+    @BeforeEach
+    void setUp() {
+        course = courseRepository.save(new Course("GJAE", "GJAE2025"));
+    }
+
     @Test
     void createActivityForCourse() {
-        Course course = courseRepository.save(new Course("GJAE", "GJAE2025"));
         Activity activity = new Activity("Lecture 1", ActivityType.LECTURE, course);
 
         Activity saved = activityRepository.save(activity);
@@ -38,7 +45,6 @@ class ActivityRepositoryTest {
 
     @Test
     void findActivitiesByCourseId() {
-        Course course = courseRepository.save(new Course("GJAE", "GJAE2025"));
         activityRepository.save(new Activity("Lecture 1", ActivityType.LECTURE, course));
         activityRepository.save(new Activity("Exam 1", ActivityType.EXAM, course));
 
@@ -48,7 +54,6 @@ class ActivityRepositoryTest {
 
     @Test
     void findActivityById() {
-        Course course = courseRepository.save(new Course("GJAE", "GJAE2025"));
         Activity activity = new Activity("Lecture 1", ActivityType.LECTURE, course);
         Activity saved = activityRepository.save(activity);
 
@@ -59,7 +64,6 @@ class ActivityRepositoryTest {
 
     @Test
     void findAllActivities() {
-        Course course = courseRepository.save(new Course("GJAE", "GJAE2025"));
         activityRepository.save(new Activity("Lecture 1", ActivityType.LECTURE, course));
         activityRepository.save(new Activity("Exam 1", ActivityType.EXAM, course));
 
@@ -69,7 +73,6 @@ class ActivityRepositoryTest {
 
     @Test
     void updateActivity() {
-        Course course = courseRepository.save(new Course("GJAE", "GJAE2025"));
         Activity activity = new Activity("Lecture 1", ActivityType.LECTURE, course);
         Activity saved = activityRepository.save(activity);
 
@@ -81,7 +84,6 @@ class ActivityRepositoryTest {
 
     @Test
     void deleteActivity() {
-        Course course = courseRepository.save(new Course("GJAE", "GJAE2025"));
         Activity activity = new Activity("Lecture 1", ActivityType.LECTURE, course);
         Activity saved = activityRepository.save(activity);
 

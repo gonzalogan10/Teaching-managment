@@ -1,5 +1,6 @@
 package com.example.teachingmanagement;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,9 +16,15 @@ class CourseServiceTest {
     @Autowired
     private CourseService courseService;
 
+    private Course course;
+
+    @BeforeEach
+    void setUp() {
+        course = new Course("GJAE", "GJAE2025");
+    }
+
     @Test
     void saveCourse() {
-        Course course = new Course("GJAE", "GJAE2025");
         Course saved = courseService.save(course);
         assertThat(saved.getId()).isNotNull();
     }
@@ -29,7 +36,6 @@ class CourseServiceTest {
 
     @Test
     void findById() {
-        Course course = new Course("GJAE", "GJAE2025");
         Course saved = courseService.save(course);
         Course found = courseService.findById(saved.getId());
         assertThat(found).isNotNull();

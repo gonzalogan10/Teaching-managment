@@ -3,6 +3,7 @@ package com.example.teachingmanagement;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,15 @@ class CourseRepositoryTest {
     @Autowired
     private CourseRepository courseRepo;
 
+    private Course course;
+
+    @BeforeEach
+    void setUp() {
+        course = new Course("GJAE", "GJAE2025");
+    }
+
     @Test
     void createAndFindCourse() {
-        Course course = new Course("GJAE", "GJAE2025");
         Course saved = courseRepo.save(course);
 
         Optional<Course> foundCourse = courseRepo.findById(saved.getId());
@@ -29,7 +36,7 @@ class CourseRepositoryTest {
 
     @Test
     void findAllCourses() {
-        courseRepo.save(new Course("GJAE", "GJAE2025"));
+        courseRepo.save(course);
         courseRepo.save(new Course("SIW", "SIW2025"));
 
         List<Course> courses = courseRepo.findAll();
@@ -38,7 +45,6 @@ class CourseRepositoryTest {
 
     @Test
     void updateCourse() {
-        Course course = new Course("GJAE", "GJAE2025");
         Course saved = courseRepo.save(course);
 
         saved.setName("GJAE Updated");
@@ -49,7 +55,6 @@ class CourseRepositoryTest {
 
     @Test
     void deleteCourse() {
-        Course course = new Course("GJAE", "GJAE2025");
         Course saved = courseRepo.save(course);
 
         courseRepo.deleteById(saved.getId());

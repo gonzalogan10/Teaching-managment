@@ -3,6 +3,7 @@ package com.example.teachingmanagement;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import com.example.teachingmanagement.model.Course;
 import com.example.teachingmanagement.model.Report;
 import com.example.teachingmanagement.model.Solver;
 import com.example.teachingmanagement.model.Task;
+import com.example.teachingmanagement.repository.ActivityRepository;
+import com.example.teachingmanagement.repository.CourseRepository;
 import com.example.teachingmanagement.repository.ReportRepository;
 import com.example.teachingmanagement.repository.SolverRepository;
 import com.example.teachingmanagement.repository.TaskRepository;
@@ -30,12 +33,29 @@ class ReportRepositoryTest {
     @Autowired
     private ReportRepository reportRepo;
 
+    @Autowired
+    private CourseRepository courseRepo;
+
+@Autowired
+    private ActivityRepository activityRepo;
+
+    private Solver solver;
+    private Task task;
+    private Course course;
+    private Activity activity;
+
+    @BeforeEach
+    void setUp() {
+        course = courseRepo.save(new Course("GJAE", "GJAE2025"));
+        activity = activityRepo.save(new Activity("Midterm", ActivityType.MIDTERM, course));
+        task = taskRepo.save(new Task("Assessment", activity));
+        solver = solverRepo.save(new Solver("Sara"));
+
+    }
+
     @Test
     void testCreateReport() {
-        Solver solver = solverRepo.save(new Solver("Sara"));
-        Task task = taskRepo.save(new Task("Assessment", new Activity("Midterm", ActivityType.PROJECT, new Course("GJAE", "GJAE2025"))));
-
-        Report report = new Report("Midterm test assessment", "2 hours", 1/6, 100, solver, task);
+        Report report = new Report("Midterm test assessment", "2 hours", 1.0/6, 100, solver, task);
         Report saved = reportRepo.save(report);
 
         assertThat(saved.getId()).isNotNull();
@@ -44,9 +64,7 @@ class ReportRepositoryTest {
 
     @Test
     void findReportById() {
-        Solver solver = solverRepo.save(new Solver("Sara"));
-        Task task = taskRepo.save(new Task("Assessment", new Activity("Midterm", ActivityType.PROJECT, new Course("GJAE", "GJAE2025"))));
-        Report report = new Report("Midterm test assessment", "2 hours", 1/6, 100, solver, task);
+        Report report = new Report("Midterm test assessment", "2 hours", 1.0/6, 100, solver, task);
         Report saved = reportRepo.save(report);
 
         Optional<Report> found = reportRepo.findById(saved.getId());
@@ -56,10 +74,8 @@ class ReportRepositoryTest {
 
     @Test
     void findAllReports() {
-        Solver solver = solverRepo.save(new Solver("Sara"));
-        Task task = taskRepo.save(new Task("Assessment", new Activity("Midterm", ActivityType.PROJECT, new Course("GJAE", "GJAE2025"))));
-        reportRepo.save(new Report("Report 1", "2 hours", 1/6, 100, solver, task));
-        reportRepo.save(new Report("Report 2", "3 hours", 1/4, 50, solver, task));
+        reportRepo.save(new Report("Report 1", "2 hours", 1.0/6, 100, solver, task));
+        reportRepo.save(new Report("Report 2", "3 hours", 1.0/4, 50, solver, task));
 
         List<Report> reports = reportRepo.findAll();
         assertThat(reports).hasSizeGreaterThanOrEqualTo(2);
@@ -67,9 +83,7 @@ class ReportRepositoryTest {
 
     @Test
     void updateReport() {
-        Solver solver = solverRepo.save(new Solver("Sara"));
-        Task task = taskRepo.save(new Task("Assessment", new Activity("Midterm", ActivityType.MIDTERM, new Course("GJAE", "GJAE2025"))));
-        Report report = new Report("Midterm test assessment", "2 hours", 1/6, 100, solver, task);
+        Report report = new Report("Midterm test assessment", "2 hours", 1.0/6, 100, solver, task);
         Report saved = reportRepo.save(report);
 
         saved.setContent("Updated assessment");
@@ -80,9 +94,7 @@ class ReportRepositoryTest {
 
     @Test
     void deleteReport() {
-        Solver solver = solverRepo.save(new Solver("Sara"));
-        Task task = taskRepo.save(new Task("Assessment", new Activity("Midterm", ActivityType.MIDTERM, new Course("GJAE", "GJAE2025"))));
-        Report report = new Report("Midterm test assessment", "2 hours", 1/6, 100, solver, task);
+        Report report = new Report("Midterm test assessment", "2 hours", 1.0/6, 100, solver, task);
         Report saved = reportRepo.save(report);
 
         reportRepo.deleteById(saved.getId());

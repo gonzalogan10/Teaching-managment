@@ -1,5 +1,6 @@
 package com.example.teachingmanagement;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,19 +27,25 @@ class TaskServiceTest {
     @Autowired
     private ActivityService activityService;
 
+    private Course course;
+    private Activity activity;
+    private Task task;
+
+    @BeforeEach
+    void setUp() {
+        course = courseService.save(new Course("GJAE", "GJAE2025"));
+        activity = activityService.createActivityForCourse(course.getId(), new Activity("Lecture 1", ActivityType.LECTURE, course));
+        task = new Task("Test task", activity);
+    }
+
     @Test
     void saveTask() {
-        Task task = new Task("Test task", new Activity("Test activity", ActivityType.LECTURE, new Course("Test", "T2025")));
         Task saved = taskService.save(task);
         assertThat(saved.getId()).isNotNull();
     }
 
      @Test
     void createForActivity() {
-        Course course = courseService.save(new Course("GJAE", "GJAE2025"));
-        Activity activity = activityService.createActivityForCourse(course.getId(), new Activity("Project", ActivityType.PROJECT, course));
-
-        Task task = new Task("Implementation", activity);
         Task saved = taskService.createTaskForActivity(activity.getId(), task);
 
         assertThat(saved.getId()).isNotNull();
@@ -52,7 +59,6 @@ class TaskServiceTest {
 
     @Test
     void findById() {
-        Task task = new Task("Test task", new Activity("Test activity", ActivityType.LECTURE, new Course("Test", "T2025")));
         Task saved = taskService.save(task);
         Task found = taskService.findById(saved.getId());
         assertThat(found).isNotNull();

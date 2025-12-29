@@ -1,5 +1,6 @@
 package com.example.teachingmanagement;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,9 +14,12 @@ import com.example.teachingmanagement.model.Task;
 import com.example.teachingmanagement.service.ActivityService;
 import com.example.teachingmanagement.service.CourseService;
 import com.example.teachingmanagement.service.ReportService;
+import com.example.teachingmanagement.service.SolverService;
 import com.example.teachingmanagement.service.TaskService;
 
 import static org.assertj.core.api.Assertions.*;
+
+import org.aspectj.lang.annotation.Before;
 
 @SpringBootTest
 class ReportServiceTest {
@@ -32,19 +36,32 @@ class ReportServiceTest {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private SolverService solverService;
+
+    private Course course;
+    private Activity activity;
+    private Task task;
+    private Solver solver;
+
+    @BeforeEach
+    void setUp() {
+        course = courseService.save(new Course("GJAE", "GJAE2025"));
+        activity = activityService.createActivityForCourse(course.getId(), new Activity("Project", ActivityType.PROJECT, course));
+        task = taskService.createTaskForActivity(activity.getId(), new Task("Implementation", activity));
+        solver = solverService.saveSolver(new Solver("Test solver"));
+
+    }
+
     @Test
     void saveReport() {
-        Report report = new Report("Test report", "1 hour", 0.1, 10, null, null);
+        Report report = new Report("Test report", "1 hour", 0.1, 10, solver, task);
         Report saved = reportService.save(report);
         assertThat(saved.getId()).isNotNull();
     }
 
     @Test
     void createForActivity() {
-        Course course = courseService.save(new Course("GJAE", "GJAE2025"));
-        Activity activity = activityService.createActivityForCourse(course.getId(), new Activity("Project", ActivityType.PROJECT, course));
-
-        Task task = new Task("Implementation", activity);
         Task saved = taskService.createTaskForActivity(activity.getId(), task);
 
         assertThat(saved.getId()).isNotNull();
@@ -58,8 +75,7 @@ class ReportServiceTest {
 
     @Test
     void findBySolver() {
-        Solver solver = new Solver("Test solver");
-        Report report = new Report("Solver report", "2 hours", 0.2, 20, solver, null);
+        Report report = new Report("Solver report", "2 hours", 0.2, 20, solver, task);
         reportService.save(report);
 
         assertThat(reportService.findBySolver(solver.getId())).isNotEmpty();
@@ -67,8 +83,7 @@ class ReportServiceTest {
 
     @Test
     void findByTask() {
-        Task task = new Task("Test task", null);
-        Report report = new Report("Task report", "3 hours", 0.3, 30, null, task);
+        Report report = new Report("Task report", "3 hours", 0.3, 30, solver, task);
         reportService.save(report);
 
         assertThat(reportService.findByTask(task.getId())).isNotEmpty();
