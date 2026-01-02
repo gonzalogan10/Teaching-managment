@@ -25,6 +25,7 @@ a minimal but fully functional backend that demonstrates the core concept of the
   - `Task` (updated to include a list of solvers and a main solver)
   - `Solver` (new)
   - `Report` (new)
+  - `ActivityLoad` (new - DTO for load calculation results)
 
 - Basic user management:
   - `User` entity
@@ -33,6 +34,40 @@ a minimal but fully functional backend that demonstrates the core concept of the
   - Spring Security
   - HTTP Basic authentication
   - Password hashing using BCrypt
+- Load calculation service:
+  - Calculate total hours spent on activities
+  - Calculate total students evaluated
+  - Calculate total proportion of work
+  - Parse time strings (e.g., "2h", "3 hours") to numeric values
+
+- Controllers (REST API):
+  - `UserController` - User management
+  - `CourseController` - Course management
+  - `ActivityController` - Activity management
+  - `TaskController` - Task management
+  - `SolverController` - Solver management
+  - `ReportController` - Report management
+  - `CriterionController` - Criterion management
+  - `LoadCalculationController` - Load calculation for activities
+
+- Services (Business Logic):
+  - `CustomUserDetailsService` - User authentication
+  - `CourseService` - Course operations
+  - `ActivityService` - Activity operations
+  - `TaskService` - Task operations
+  - `SolverService` - Solver operations (assign to tasks, main solver)
+  - `ReportService` - Report operations (by task, by solver, by activity)
+  - `CriterionService` - Criterion operations
+  - `LoadCalculationService` - Calculate hours, students, and proportion for activities
+
+- Repositories (Data Access):
+  - `UserRepository`
+  - `CourseRepository`
+  - `ActivityRepository`
+  - `TaskRepository`
+  - `SolverRepository`
+  - `ReportRepository`
+  - `CriterionRepository`
 
 ---
 ## Test (new)
@@ -164,9 +199,23 @@ SELECT * FROM REPORT;
 The H2 console is enabled for development only and explicitly allowed in the security configuration.
 
 ### NEW Endpoints 
-- Solver Endpoints
-POST /api/solvers → Create a new solver
-GET /api/solvers → Find all solvers
-POST /api/solvers/{solverId}/solver/{taskId} → adds a solver to a task in the solver list if it is not already present
-POST /api/solvers/{solverId}/main-solver/{taskId} → Assign a solver as main solver for a task (adds to list if not already present)
-- Report Endpoints
+
+#### Solver Endpoints
+- `POST /api/solvers` → Create a new solver
+- `GET /api/solvers` → Find all solvers
+- `POST /api/solvers/{solverId}/solver/{taskId}` → Adds a solver to a task in the solver list if it is not already present
+- `POST /api/solvers/{solverId}/main-solver/{taskId}` → Assign a solver as main solver for a task (adds to list if not already present)
+
+#### Report Endpoints
+- `POST /api/reports` → Create a new report
+- `GET /api/reports` → Get all reports
+- `POST /api/reports/task/{taskId}/solver/{solverId}` → Create a report for a specific task and solver
+- `GET /api/reports/solver/{solverId}` → Get reports by solver
+- `GET /api/reports/task/{taskId}` → Get reports by task
+
+#### Load Calculation Endpoints
+- `GET /api/activities/{activityId}/reports` → Get all reports for a specific activity
+- `GET /api/activities/{activityId}/load` → Calculate the total load (hours, students, proportion) for an activity
+- `GET /api/activities/{activityId}/load/hours` → Get total hours spent on the activity
+- `GET /api/activities/{activityId}/load/students` → Get total students evaluated in the activity
+- `GET /api/activities/{activityId}/load/proportion` → Get total proportion of work on the activity
