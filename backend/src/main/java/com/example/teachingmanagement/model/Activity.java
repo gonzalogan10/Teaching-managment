@@ -1,5 +1,6 @@
 package com.example.teachingmanagement.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -9,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -29,6 +31,9 @@ public class Activity {
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL)
     private List<Task> tasks;
+
+    @ManyToMany
+    private List<Solver> solvers = new ArrayList<>();
 
     // 🔹 CONSTRUCTEUR VIDE (OBLIGATOIRE)
     public Activity() {
@@ -79,5 +84,13 @@ public class Activity {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public List<Solver> getSolvers() {
+        return solvers;
+    }
+
+    public void setSolvers(List<Solver> solvers) {
+        this.solvers = solvers;
     }
 }

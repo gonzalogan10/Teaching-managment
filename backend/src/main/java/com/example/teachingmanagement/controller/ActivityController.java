@@ -1,7 +1,9 @@
 package com.example.teachingmanagement.controller;
 
 import com.example.teachingmanagement.model.Activity;
+import com.example.teachingmanagement.model.Solver;
 import com.example.teachingmanagement.service.ActivityService;
+import com.example.teachingmanagement.service.SolverService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,9 +13,11 @@ import java.util.List;
 public class ActivityController {
 
     private final ActivityService service;
+    private final SolverService solverService;
 
-    public ActivityController(ActivityService service) {
+    public ActivityController(ActivityService service, SolverService solverService) {
         this.service = service;
+        this.solverService = solverService;
     }
 
     @PostMapping
@@ -36,5 +40,43 @@ public class ActivityController {
     @PostMapping("/course/{courseId}")
     public Activity createActivityForCourse(@PathVariable Long courseId, @RequestBody Activity activity) {
         return service.createActivityForCourse(courseId, activity);
+    }
+
+    /**
+     * Add a solver (teacher) to an activity for evaluation
+     * @param activityId ID of the activity
+     * @param solverId ID of the solver
+     * @return the updated activity
+     */
+    @PostMapping("/{activityId}/solvers/{solverId}")
+    public Activity addSolverToActivity(@PathVariable Long activityId, @PathVariable Long solverId) {
+        Activity activity = service.findById(activityId);
+        Solver solver = solverService.findById(solverId);
+        activity.getSolvers().add(solver);
+        return service.save(activity);
+    }
+
+    /**
+     * Remove a solver from an activity
+     * @param activityId ID of the activity
+     * @param solverId ID of the solver
+     * @return the updated activity
+     */
+    @DeleteMapping("/{activityId}/solvers/{solverId}")
+    public Activity removeSolverFromActivity(@PathVariable Long activityId, @PathVariable Long solverId) {
+        Activity activity = service.findById(activityId);
+        Solver solver = solverService.findById(solverId);
+        activity.getSolvers().remove(solver);
+        return service.save(activity);
+    }
+
+    /**
+     * Get all solvers assigned to an activity
+     * @param activityId ID of the activity
+     * @return list of solvers assigned to the activity
+     */
+    @GetMapping("/{activityId}/solvers")
+    public List<Solver> getSolversForActivity(@PathVariable Long activityId) {
+        return service.findById(activityId).getSolvers();
     }
 }
