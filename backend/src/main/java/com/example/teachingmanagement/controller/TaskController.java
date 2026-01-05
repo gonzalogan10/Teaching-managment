@@ -42,5 +42,15 @@ public class TaskController {
     @PostMapping("/activity/{activityId}")
     public Task createTaskForActivity( @PathVariable Long activityId, @RequestBody Task task) {
         return service.createTaskForActivity(activityId, task);
-}
+    }
+
+    /**
+     * Get all tasks for a specific activity
+     * @param activityId
+     * @return
+     */
+    @GetMapping("/activity/{activityId}")
+    public List<Task> getTasksByActivity(@PathVariable Long activityId) {
+        return service.findByActivityId(activityId);
+    }
 }

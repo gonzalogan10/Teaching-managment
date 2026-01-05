@@ -40,4 +40,7 @@ public class ActivityService {
         return activityRepository.save(activity);
     }
 
+    public List<Activity> findByCourseId(Long courseId) {
+        return activityRepository.findByCourseId(courseId);
+    }
 }

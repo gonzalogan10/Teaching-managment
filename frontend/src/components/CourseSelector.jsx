@@ -3,24 +3,53 @@ import { useEffect, useState } from "react";
 
 function CourseSelector(courseProps) {
   const [courses, setCourses] = useState([]);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => { //lamda function
     fetch("http://localhost:8080/api/courses", {
+      method: "GET",
       headers: {
-        Authorization: "Basic " + btoa("teacher1:test")}})
-    .then(response => response.json())
-    .then(data => setCourses(data));}, 
+        "Authorization": "Basic " + btoa("teacher1:test"),
+        "Content-Type": "application/json"
+      },
+      credentials: 'include'
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch courses: ' + response.status);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Courses loaded:', data);
+      setCourses(Array.isArray(data) ? data : []);
+    })
+    .catch(error => {
+      console.error('Error fetching courses:', error);
+      setError(error.message);
+    });}, 
     []);
 
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setSelectedValue(value);
+    courseProps.onSelect(value);
+  };
+
   return (
-    <select onChange={event => courseProps.onSelect(event.target.value)}>
-      <option value="">Select a course</option>
-      {courses.map(course => (
-        <option key={course.id} value={course.id}>
-          {course.name}
-        </option>
-      ))}
-    </select>
+    <div>
+      {error && <p style={{ color: 'red' }}>Error loading courses: {error}</p>}
+      <select value={selectedValue} onChange={handleChange}>
+        <option value="">Select a course</option>
+        {courses.map(course => (
+          <option key={course.id} value={course.id}>
+            {course.name}
+          </option>
+        ))}
+      </select>
+      {courses.length === 0 && !error && <p>Loading courses...</p>}
+    </div>
   );
 }
 

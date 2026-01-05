@@ -3,6 +3,8 @@ package com.example.teachingmanagement.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,12 +29,15 @@ public class Activity {
     private ActivityType type;
 
     @ManyToOne
+    @JsonIgnore
     private Course course;
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Task> tasks;
 
     @ManyToMany
+    @JsonIgnore
     private List<Solver> solvers = new ArrayList<>();
 
     // 🔹 CONSTRUCTEUR VIDE (OBLIGATOIRE)

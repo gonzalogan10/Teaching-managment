@@ -9,7 +9,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     public void configureCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins("http://localhost:3000") // Puerto de React
+                .allowedOrigins("http://localhost:3000", "http://localhost:5173") // React + Vite
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);

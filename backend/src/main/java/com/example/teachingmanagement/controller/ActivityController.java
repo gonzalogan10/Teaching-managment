@@ -30,6 +30,11 @@ public class ActivityController {
         return service.findAll();
     }
 
+    @GetMapping("/course/{courseId}")
+    public List<Activity> getActivitiesByCourse(@PathVariable Long courseId) {
+        return service.findByCourseId(courseId);
+    }
+
     /**
      * Create an activity for a specific course
      * PathVariable is used to extract values from the URL path and convert them into Long parameters.

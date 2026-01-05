@@ -12,16 +12,82 @@ WHERE NOT EXISTS (
     SELECT 1 FROM course WHERE id = 1
 );
 
+INSERT INTO course (id, name, code)
+SELECT 2, 'Databases', 'DBI2025'
+WHERE NOT EXISTS (
+    SELECT 1 FROM course WHERE id = 2
+);
+
+INSERT INTO course (id, name, code)
+SELECT 3, 'Web Development', 'WEB2025'
+WHERE NOT EXISTS (
+    SELECT 1 FROM course WHERE id = 3
+);
+
+INSERT INTO course (id, name, code)
+SELECT 4, 'Software Engineering', 'SWE2025'
+WHERE NOT EXISTS (
+    SELECT 1 FROM course WHERE id = 4
+);
+
 INSERT INTO activity (id, name, type, course_id)
 SELECT 1, 'Project 1', 'PROJECT', 1
 WHERE NOT EXISTS (
     SELECT 1 FROM activity WHERE id = 1
 );
 
+INSERT INTO activity (id, name, type, course_id)
+SELECT 2, 'Lectures', 'LECTURE', 1
+WHERE NOT EXISTS (
+    SELECT 1 FROM activity WHERE id = 2
+);
+
+INSERT INTO activity (id, name, type, course_id)
+SELECT 3, 'Midterm Test', 'EXAM', 1
+WHERE NOT EXISTS (
+    SELECT 1 FROM activity WHERE id = 3
+);
+
+INSERT INTO activity (id, name, type, course_id)
+SELECT 4, 'Database Design', 'PROJECT', 2
+WHERE NOT EXISTS (
+    SELECT 1 FROM activity WHERE id = 4
+);
+
+INSERT INTO activity (id, name, type, course_id)
+SELECT 5, 'SQL Basics', 'LECTURE', 2
+WHERE NOT EXISTS (
+    SELECT 1 FROM activity WHERE id = 5
+);
+
+INSERT INTO activity (id, name, type, course_id)
+SELECT 6, 'Frontend Project', 'PROJECT', 3
+WHERE NOT EXISTS (
+    SELECT 1 FROM activity WHERE id = 6
+);
+
+INSERT INTO activity (id, name, type, course_id)
+SELECT 7, 'React Workshop', 'LECTURE', 3
+WHERE NOT EXISTS (
+    SELECT 1 FROM activity WHERE id = 7
+);
+
 INSERT INTO team (id, name)
 SELECT 1, 'Team A'
 WHERE NOT EXISTS (
     SELECT 1 FROM team WHERE id = 1
+);
+
+INSERT INTO team (id, name)
+SELECT 2, 'Team B'
+WHERE NOT EXISTS (
+    SELECT 1 FROM team WHERE id = 2
+);
+
+INSERT INTO team (id, name)
+SELECT 3, 'Team C'
+WHERE NOT EXISTS (
+    SELECT 1 FROM team WHERE id = 3
 );
 
 INSERT INTO student (id, first_name, last_name, email)
@@ -34,6 +100,30 @@ INSERT INTO student (id, first_name, last_name, email)
 SELECT 2, 'Bob', 'Jones', 'bob@fit.cvut.cz'
 WHERE NOT EXISTS (
     SELECT 1 FROM student WHERE email = 'bob@fit.cvut.cz'
+);
+
+INSERT INTO student (id, first_name, last_name, email)
+SELECT 3, 'Carol', 'White', 'carol@fit.cvut.cz'
+WHERE NOT EXISTS (
+    SELECT 1 FROM student WHERE email = 'carol@fit.cvut.cz'
+);
+
+INSERT INTO student (id, first_name, last_name, email)
+SELECT 4, 'David', 'Brown', 'david@fit.cvut.cz'
+WHERE NOT EXISTS (
+    SELECT 1 FROM student WHERE email = 'david@fit.cvut.cz'
+);
+
+INSERT INTO student (id, first_name, last_name, email)
+SELECT 5, 'Eve', 'Davis', 'eve@fit.cvut.cz'
+WHERE NOT EXISTS (
+    SELECT 1 FROM student WHERE email = 'eve@fit.cvut.cz'
+);
+
+INSERT INTO student (id, first_name, last_name, email)
+SELECT 6, 'Frank', 'Miller', 'frank@fit.cvut.cz'
+WHERE NOT EXISTS (
+    SELECT 1 FROM student WHERE email = 'frank@fit.cvut.cz'
 );
 
 INSERT INTO team_membership (id, student_id, team_id, activity_id)
@@ -86,4 +176,151 @@ INSERT INTO assessment (id, criterion_id, membership_id, points, feedback)
 SELECT 3, 2, 2, 9, 'Excellent'
 WHERE NOT EXISTS (
     SELECT 1 FROM assessment WHERE id = 3
+);
+
+-- SOLVERS
+INSERT INTO solver (id, name)
+SELECT 1, 'Alice Smith'
+WHERE NOT EXISTS (
+    SELECT 1 FROM solver WHERE id = 1
+);
+
+INSERT INTO solver (id, name)
+SELECT 2, 'Bob Jones'
+WHERE NOT EXISTS (
+    SELECT 1 FROM solver WHERE id = 2
+);
+
+INSERT INTO solver (id, name)
+SELECT 3, 'Carol White'
+WHERE NOT EXISTS (
+    SELECT 1 FROM solver WHERE id = 3
+);
+
+INSERT INTO solver (id, name)
+SELECT 4, 'David Brown'
+WHERE NOT EXISTS (
+    SELECT 1 FROM solver WHERE id = 4
+);
+
+-- TASKS
+INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+SELECT 1, 'Project Setup', 'Initialize the project repository and development environment', 'PROJECT', 1, '2026-01-06', '2026-01-10', 1, 1
+WHERE NOT EXISTS (
+    SELECT 1 FROM task WHERE id = 1
+);
+
+INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+SELECT 2, 'Implementation Phase', 'Develop the core functionality of the project', 'PROJECT', 2, '2026-01-11', '2026-01-20', 1, 2
+WHERE NOT EXISTS (
+    SELECT 1 FROM task WHERE id = 2
+);
+
+INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+SELECT 3, 'Testing and Debugging', 'Write unit tests and fix any issues found', 'PROJECT', 3, '2026-01-21', '2026-01-25', 1, 1
+WHERE NOT EXISTS (
+    SELECT 1 FROM task WHERE id = 3
+);
+
+INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+SELECT 4, 'Introduction to IVS', 'Overview of IVS concepts and principles', 'LECTURE', 1, '2026-01-06', '2026-01-06', 2, 3
+WHERE NOT EXISTS (
+    SELECT 1 FROM task WHERE id = 4
+);
+
+INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+SELECT 5, 'Advanced Concepts', 'Deep dive into advanced IVS topics', 'LECTURE', 2, '2026-01-13', '2026-01-13', 2, 4
+WHERE NOT EXISTS (
+    SELECT 1 FROM task WHERE id = 5
+);
+
+INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+SELECT 6, 'Midterm Test', 'Comprehensive test covering all course material', 'EXAM', 1, '2026-01-27', '2026-01-27', 3, NULL
+WHERE NOT EXISTS (
+    SELECT 1 FROM task WHERE id = 6
+);
+
+INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+SELECT 7, 'Schema Design', 'Design the database schema for the project', 'PROJECT', 1, '2026-01-06', '2026-01-12', 4, 2
+WHERE NOT EXISTS (
+    SELECT 1 FROM task WHERE id = 7
+);
+
+INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+SELECT 8, 'SQL Implementation', 'Implement SQL scripts for the database', 'PROJECT', 2, '2026-01-13', '2026-01-18', 4, 3
+WHERE NOT EXISTS (
+    SELECT 1 FROM task WHERE id = 8
+);
+
+INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+SELECT 9, 'SQL Queries Practice', 'Write and optimize SQL queries', 'LECTURE', 1, '2026-01-15', '2026-01-19', 5, 4
+WHERE NOT EXISTS (
+    SELECT 1 FROM task WHERE id = 9
+);
+
+-- TASK SOLVERS (many-to-many relationships)
+INSERT INTO task_solvers (task_id, solvers_id)
+SELECT 1, 1
+WHERE NOT EXISTS (
+    SELECT 1 FROM task_solvers WHERE task_id = 1 AND solvers_id = 1
+);
+
+INSERT INTO task_solvers (task_id, solvers_id)
+SELECT 1, 2
+WHERE NOT EXISTS (
+    SELECT 1 FROM task_solvers WHERE task_id = 1 AND solvers_id = 2
+);
+
+INSERT INTO task_solvers (task_id, solvers_id)
+SELECT 2, 2
+WHERE NOT EXISTS (
+    SELECT 1 FROM task_solvers WHERE task_id = 2 AND solvers_id = 2
+);
+
+INSERT INTO task_solvers (task_id, solvers_id)
+SELECT 2, 3
+WHERE NOT EXISTS (
+    SELECT 1 FROM task_solvers WHERE task_id = 2 AND solvers_id = 3
+);
+
+INSERT INTO task_solvers (task_id, solvers_id)
+SELECT 3, 1
+WHERE NOT EXISTS (
+    SELECT 1 FROM task_solvers WHERE task_id = 3 AND solvers_id = 1
+);
+
+INSERT INTO task_solvers (task_id, solvers_id)
+SELECT 3, 4
+WHERE NOT EXISTS (
+    SELECT 1 FROM task_solvers WHERE task_id = 3 AND solvers_id = 4
+);
+
+INSERT INTO task_solvers (task_id, solvers_id)
+SELECT 4, 3
+WHERE NOT EXISTS (
+    SELECT 1 FROM task_solvers WHERE task_id = 4 AND solvers_id = 3
+);
+
+INSERT INTO task_solvers (task_id, solvers_id)
+SELECT 5, 4
+WHERE NOT EXISTS (
+    SELECT 1 FROM task_solvers WHERE task_id = 5 AND solvers_id = 4
+);
+
+INSERT INTO task_solvers (task_id, solvers_id)
+SELECT 7, 2
+WHERE NOT EXISTS (
+    SELECT 1 FROM task_solvers WHERE task_id = 7 AND solvers_id = 2
+);
+
+INSERT INTO task_solvers (task_id, solvers_id)
+SELECT 8, 3
+WHERE NOT EXISTS (
+    SELECT 1 FROM task_solvers WHERE task_id = 8 AND solvers_id = 3
+);
+
+INSERT INTO task_solvers (task_id, solvers_id)
+SELECT 9, 4
+WHERE NOT EXISTS (
+    SELECT 1 FROM task_solvers WHERE task_id = 9 AND solvers_id = 4
 );
