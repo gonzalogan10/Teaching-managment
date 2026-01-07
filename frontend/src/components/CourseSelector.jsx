@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./ComponentsStyle.css";
 //useEffect when using directly, useState for a value that changes over time
 
 function CourseSelector(courseProps) {
@@ -39,7 +40,7 @@ function CourseSelector(courseProps) {
 
   return (
     <div>
-      {error && <p style={{ color: 'red' }}>Error loading courses: {error}</p>}
+      {error && <p className="course-selector-error">Error loading courses: {error}</p>}
       <select value={selectedValue} onChange={handleChange}>
         <option value="">Select a course</option>
         {courses.map(course => (

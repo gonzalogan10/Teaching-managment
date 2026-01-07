@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./ComponentsStyle.css";
 
 function TaskReport({ courseId }) {
   const [showReportForm, setShowReportForm] = useState(false);
@@ -61,27 +62,19 @@ function TaskReport({ courseId }) {
   }
 
   return (
-    <div style={{ marginTop: "20px", padding: "15px", backgroundColor: "#fff3e0", borderRadius: "4px" }}>
+    <div className="task-report-container">
       <button
         onClick={() => setShowReportForm(!showReportForm)}
-        style={{
-          padding: "10px 20px",
-          backgroundColor: "#ff9800",
-          color: "white",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-          fontSize: "1em"
-        }}
+        className="task-report-toggle-button"
       >
         {showReportForm ? "Cancel" : "+ Submit Task Report"}
       </button>
 
       {showReportForm && (
-        <div style={{ marginTop: "15px", padding: "15px", backgroundColor: "white", borderRadius: "4px", border: "1px solid #ddd" }}>
+        <div className="task-report-form">
           <h4>Submit Work Report</h4>
 
-          <div style={{ marginBottom: "15px" }}>
+          <div className="task-report-field">
             <label><strong>What was done? (Description):</strong></label>
             <textarea
               name="description"
@@ -89,18 +82,11 @@ function TaskReport({ courseId }) {
               onChange={handleReportInputChange}
               placeholder="Describe the work completed"
               rows="4"
-              style={{
-                width: "100%",
-                padding: "8px",
-                marginTop: "5px",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                boxSizing: "border-box"
-              }}
+              className="task-report-textarea"
             />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "15px", marginBottom: "15px" }}>
+          <div className="task-report-grid">
             <div>
               <label><strong>Hours Spent:</strong></label>
               <input
@@ -110,14 +96,7 @@ function TaskReport({ courseId }) {
                 onChange={handleReportInputChange}
                 placeholder="e.g., 7"
                 step="0.5"
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  marginTop: "5px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  boxSizing: "border-box"
-                }}
+                className="task-report-input"
               />
             </div>
             <div>
@@ -128,14 +107,7 @@ function TaskReport({ courseId }) {
                 value={reportData.studentsEvaluated}
                 onChange={handleReportInputChange}
                 placeholder="e.g., 350"
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  marginTop: "5px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  boxSizing: "border-box"
-                }}
+                className="task-report-input"
               />
             </div>
             <div>
@@ -146,42 +118,21 @@ function TaskReport({ courseId }) {
                 value={reportData.proportionOfWork}
                 onChange={handleReportInputChange}
                 placeholder="e.g., 1/6"
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  marginTop: "5px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  boxSizing: "border-box"
-                }}
+                className="task-report-input"
               />
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div className="task-report-actions">
             <button
               onClick={handleSubmitReport}
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#4CAF50",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer"
-              }}
+              className="task-report-submit-button"
             >
               Submit Report
             </button>
             <button
               onClick={() => setShowReportForm(false)}
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#f44336",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer"
-              }}
+              className="task-report-cancel-button"
             >
               Cancel
             </button>

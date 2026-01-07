@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./ComponentsStyle.css";
 
 function TaskCreator({ activityId, onTaskCreated }) {
   const [showForm, setShowForm] = useState(false);
@@ -22,7 +23,7 @@ function TaskCreator({ activityId, onTaskCreated }) {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === "taskOrder" ? parseInt(value) : value
+      [name]: name === "taskOrder" ? parseInt(value, 10) : value
     }));
   };
 
@@ -80,27 +81,20 @@ function TaskCreator({ activityId, onTaskCreated }) {
   }
 
   return (
-    <div style={{ marginTop: "20px", padding: "15px", backgroundColor: "#f9f9f9", borderRadius: "4px" }}>
+    <div className="task-creator-container">
       <button
+        type="button"
         onClick={() => setShowForm(!showForm)}
-        style={{
-          padding: "10px 20px",
-          backgroundColor: "#0066cc",
-          color: "white",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-          fontSize: "1em"
-        }}
+        className="task-creator-toggle-button"
       >
         {showForm ? "Cancel" : "+ Create New Task"}
       </button>
 
       {showForm && (
-        <div style={{ marginTop: "15px", padding: "15px", backgroundColor: "white", borderRadius: "4px", border: "1px solid #ddd" }}>
+        <div className="task-creator-form">
           <h4>Create a New Task</h4>
 
-          <div style={{ marginBottom: "15px" }}>
+          <div className="task-creator-field">
             <label><strong>Task Order:</strong></label>
             <input
               type="number"
@@ -108,18 +102,12 @@ function TaskCreator({ activityId, onTaskCreated }) {
               value={formData.taskOrder}
               onChange={handleInputChange}
               placeholder="Task order in activity"
-              style={{
-                width: "100%",
-                padding: "8px",
-                marginTop: "5px",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                boxSizing: "border-box"
-              }}
+              min="1"
+              className="task-creator-input"
             />
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
+          <div className="task-creator-field">
             <label><strong>Title:</strong></label>
             <input
               type="text"
@@ -127,18 +115,11 @@ function TaskCreator({ activityId, onTaskCreated }) {
               value={formData.title}
               onChange={handleInputChange}
               placeholder="Enter task title"
-              style={{
-                width: "100%",
-                padding: "8px",
-                marginTop: "5px",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                boxSizing: "border-box"
-              }}
+              className="task-creator-input"
             />
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
+          <div className="task-creator-field">
             <label><strong>Description:</strong></label>
             <textarea
               name="description"
@@ -146,30 +127,17 @@ function TaskCreator({ activityId, onTaskCreated }) {
               onChange={handleInputChange}
               placeholder="Enter task description"
               rows="4"
-              style={{
-                width: "100%",
-                padding: "8px",
-                marginTop: "5px",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                boxSizing: "border-box"
-              }}
+              className="task-creator-textarea"
             />
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
+          <div className="task-creator-field">
             <label><strong>Type:</strong></label>
             <select
               name="type"
               value={formData.type}
               onChange={handleInputChange}
-              style={{
-                width: "100%",
-                padding: "8px",
-                marginTop: "5px",
-                border: "1px solid #ddd",
-                borderRadius: "4px"
-              }}
+              className="task-creator-select"
             >
               {taskTypes.map(type => (
                 <option key={type.value} value={type.value}>{type.label}</option>
@@ -177,7 +145,7 @@ function TaskCreator({ activityId, onTaskCreated }) {
             </select>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "15px" }}>
+          <div className="task-creator-dates-grid">
             <div>
               <label><strong>Start Date:</strong></label>
               <input
@@ -185,14 +153,7 @@ function TaskCreator({ activityId, onTaskCreated }) {
                 name="startDate"
                 value={formData.startDate}
                 onChange={handleInputChange}
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  marginTop: "5px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  boxSizing: "border-box"
-                }}
+                className="task-creator-input"
               />
             </div>
             <div>
@@ -202,43 +163,24 @@ function TaskCreator({ activityId, onTaskCreated }) {
                 name="endDate"
                 value={formData.endDate}
                 onChange={handleInputChange}
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  marginTop: "5px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  boxSizing: "border-box"
-                }}
+                className="task-creator-input"
               />
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div className="task-creator-actions">
             <button
+              type="button"
               onClick={handleCreateTask}
               disabled={loading}
-              style={{
-                padding: "10px 20px",
-                backgroundColor: loading ? "#999" : "#4CAF50",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                cursor: loading ? "not-allowed" : "pointer"
-              }}
+              className="task-creator-submit-button"
             >
               {loading ? "Creating..." : "Create Task"}
             </button>
             <button
+              type="button"
               onClick={() => setShowForm(false)}
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#f44336",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer"
-              }}
+              className="task-creator-cancel-button"
             >
               Cancel
             </button>

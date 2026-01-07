@@ -7,21 +7,6 @@
   position: relative;
 }
 
-#root::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url('../assets/background.svg');
-  background-size: contain;
-  background-position: center;
-  background-repeat: repeat-x;
-  opacity: 0.05;
-  z-index: -1;
-}
-
 .logo {
   height: 8em;
   will-change: filter;
@@ -74,4 +59,34 @@
   border: none;
   background: transparent;
   cursor: pointer;
+}
+
+/* ActivityScreen Styles */
+.activity-screen-course-section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.activity-screen-course-details {
+  margin-top: 30px;
+  padding: 25px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 2px solid #d36666;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.activity-screen-course-details h3 {
+  color: #000000;
+  margin: 0 0 15px 0;
+}
+
+.activity-screen-course-details p {
+  color: #300000;
+  font-size: 1.1em;
+  margin: 10px 0;
+}
+
+.activity-screen-tasks-section {
+  margin-top: 30px;
 }

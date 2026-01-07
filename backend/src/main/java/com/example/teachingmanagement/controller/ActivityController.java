@@ -1,8 +1,10 @@
 package com.example.teachingmanagement.controller;
 
 import com.example.teachingmanagement.model.Activity;
+import com.example.teachingmanagement.model.Course;
 import com.example.teachingmanagement.model.Solver;
 import com.example.teachingmanagement.service.ActivityService;
+import com.example.teachingmanagement.service.CourseService;
 import com.example.teachingmanagement.service.SolverService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,14 +16,19 @@ public class ActivityController {
 
     private final ActivityService service;
     private final SolverService solverService;
+    private final CourseService courseService;
 
-    public ActivityController(ActivityService service, SolverService solverService) {
+    public ActivityController(ActivityService service, SolverService solverService, CourseService courseService) {
         this.service = service;
         this.solverService = solverService;
+        this.courseService = courseService;
     }
 
     @PostMapping
     public Activity create(@RequestBody Activity activity) {
+        Long courseId = activity.getCourse().getId();
+        Course course = courseService.findById(courseId);
+        activity.setCourse(course);
         return service.save(activity);
     }
 

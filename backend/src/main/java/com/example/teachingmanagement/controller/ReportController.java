@@ -2,6 +2,7 @@ package com.example.teachingmanagement.controller;
 
 import java.util.List;
 
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,14 +10,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.teachingmanagement.model.Course;
 import com.example.teachingmanagement.model.Report;
+import com.example.teachingmanagement.repository.CourseRepository;
+import com.example.teachingmanagement.service.ActivityService;
+import com.example.teachingmanagement.service.CourseService;
 import com.example.teachingmanagement.service.ReportService;
+import com.example.teachingmanagement.service.SolverService;
+import com.example.teachingmanagement.service.TaskService;
 
 @RestController
 @RequestMapping("/api/reports")
 public class ReportController {
 
     private final ReportService service;
+    private CourseService courseService;
+    private ActivityService activityService;
+    private SolverService solverService;
+    private TaskService taskService;
 
     public ReportController(ReportService service) {
         this.service = service;
@@ -24,6 +35,15 @@ public class ReportController {
 
     @PostMapping
     public Report create(@RequestBody Report report) {
+        Long taskId = report.getTask().getId();
+        report.setTask(taskService.findById(taskId));
+        Long activityId = report.getTask().getActivity().getId();
+        report.getTask().setActivity(activityService.findById(activityId));
+        Long courseId = report.getTask().getActivity().getCourse().getId();
+        report.getTask().getActivity().setCourse(courseService.findById(courseId));
+        
+        Long solverId = report.getSolver().getId();
+        report.setSolver(solverService.findById(solverId));
         return service.save(report);
     }
 

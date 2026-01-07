@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./ComponentsStyle.css";
 
 function ActivityList({ courseId, onActivitySelect, selectedActivityId }) {
 const [activities, setActivities] = useState([]);
@@ -52,49 +53,40 @@ const handleActivityClick = (activityId) => {
 };
 
 return (
-    <div style={{ marginTop: "30px", marginBottom: "30px" }}>
-    <h2 style={{ color: "#c1bdbdff", borderBottom: "2px solid #999", paddingBottom: "10px" }}>
+    <div className="activity-list-container">
+    <h2 className="activity-list-header">
         Activities in Course
     </h2>
     
-    {error && <p style={{ color: 'red' }}>Error loading activities: {error}</p>}
+    {error && <p className="activity-list-error">Error loading activities: {error}</p>}
     
     {activities.length === 0 && !error ? (
-        <p style={{ color: "#828282ff", fontSize: "1.1em" }}>No activities in this course yet</p>
+        <p className="activity-list-empty">No activities in this course yet</p>
     ) : (
-        <ul style={{ listStyle: "none", padding: 0 }}>
+        <ul className="activity-list">
         {activities.map(activity => (
             <li
             key={activity.id}
             onClick={() => handleActivityClick(activity.id)}
-            style={{
-                padding: "15px",
-                margin: "8px 0",
-                backgroundColor: selectedActivityId === activity.id ? "#d1e7f5" : "#e8e8e8",
-                borderLeft: `5px solid ${selectedActivityId === activity.id ? "#1976d2" : "#999"}`,
-                cursor: "pointer",
-                borderRadius: "4px",
-                transition: "all 0.2s ease",
-                boxShadow: selectedActivityId === activity.id ? "0 2px 6px rgba(0,0,0,0.15)" : "none"
-            }}
+            className={`activity-item ${selectedActivityId === activity.id ? 'selected' : ''}`}
             >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="activity-header">
                 <div>
-                <strong style={{ fontSize: "1.1em", color: "#333" }}>
+                <strong className="activity-title">
                     {activity.name}
                 </strong>
-                <div style={{ color: "#666", fontSize: "0.9em", marginTop: "5px" }}>
+                <div className="activity-type">
                     {getActivityTypeLabel(activity.type)}
                 </div>
                 </div>
             </div>
 
             {selectedActivityId === activity.id && (
-                <div style={{ marginTop: "10px", paddingTop: "10px", borderTop: "1px solid #999" }}>
-                <p style={{ color: "#666", margin: "5px 0" }}>
+                <div className="activity-details">
+                <p className="activity-info">
                     <strong>Type:</strong> {getActivityTypeLabel(activity.type)}
                 </p>
-                <p style={{ color: "#666", margin: "5px 0" }}>
+                <p className="activity-info">
                     <strong>ID:</strong> {activity.id}
                 </p>
                 </div>

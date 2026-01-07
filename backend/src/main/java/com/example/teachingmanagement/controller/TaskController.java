@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.teachingmanagement.model.Course;
 import com.example.teachingmanagement.model.Task;
+import com.example.teachingmanagement.service.ActivityService;
+import com.example.teachingmanagement.service.CourseService;
 import com.example.teachingmanagement.service.TaskService;
 
 @RestController
@@ -17,13 +20,21 @@ import com.example.teachingmanagement.service.TaskService;
 public class TaskController {
 
     private final TaskService service;
+    private final CourseService courseService;
+    private final ActivityService activityService;
 
-    public TaskController(TaskService service) {
+    public TaskController(TaskService service, CourseService courseService, ActivityService activityService) {
         this.service = service;
+        this.courseService = courseService;
+        this.activityService = activityService;
     }
 
     @PostMapping
     public Task create(@RequestBody Task task) {
+        Long courseId = task.getActivity().getCourse().getId();
+        task.getActivity().setCourse(courseService.findById(courseId));
+        Long activityId = task.getActivity().getId();
+        task.setActivity(activityService.findById(activityId));
         return service.save(task);
     }
 
