@@ -62,7 +62,7 @@ function TaskReport({ courseId }) {
   }
 
   return (
-    <div className="task-report-container">
+    <div className="task-container">
       <button
         onClick={() => setShowReportForm(!showReportForm)}
         className="task-report-toggle-button"

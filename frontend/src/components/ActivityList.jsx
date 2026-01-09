@@ -53,7 +53,7 @@ const handleActivityClick = (activityId) => {
 };
 
 return (
-    <div className="activity-list-container">
+    <div className="list-container">
     <h2 className="activity-list-header">
         Activities in Course
     </h2>

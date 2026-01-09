@@ -40,7 +40,7 @@ function CourseSelector(courseProps) {
 
   return (
     <div>
-      {error && <p className="course-selector-error">Error loading courses: {error}</p>}
+      {error && <p className="course-selector-error">Error: {error}</p>}
       <select value={selectedValue} onChange={handleChange}>
         <option value="">Select a course</option>
         {courses.map(course => (
@@ -49,7 +49,7 @@ function CourseSelector(courseProps) {
           </option>
         ))}
       </select>
-      {courses.length === 0 && !error && <p>Loading courses...</p>}
+      {!courses.length && !error && <p>Loading courses...</p>}
     </div>
   );
 }

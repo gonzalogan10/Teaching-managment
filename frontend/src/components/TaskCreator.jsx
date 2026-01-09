@@ -81,7 +81,7 @@ function TaskCreator({ activityId, onTaskCreated }) {
   }
 
   return (
-    <div className="task-creator-container">
+    <div className="task-container">
       <button
         type="button"
         onClick={() => setShowForm(!showForm)}

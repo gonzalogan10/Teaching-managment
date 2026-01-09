@@ -18,7 +18,7 @@ function FirstScreen() {
         </div>
         
         <div className="card">
-          <button onClick={() => navigate('/activity')} id="logo-button">
+          <button onClick={() => navigate('/menu')} id="logo-button">
             <img src={vut_logo} className="logo" alt="VUT logo" />
           </button>
           <p className="subtitle">

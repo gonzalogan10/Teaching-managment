@@ -96,7 +96,7 @@ const getTaskTypeLabel = (type) => {
   };
 
   return (
-    <div className="task-list-container">
+    <div className="list-container">
       <h3 className="task-list-header">
         Tasks
       </h3>
