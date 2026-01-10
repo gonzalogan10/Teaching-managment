@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import ActivitySelector from "../components/ActivitySelector";
 import TeamSelector from "../components/TeamSelector";
 import CriterionFilter from "../components/CriterionFilter";
@@ -12,6 +13,7 @@ function EvaluationScreen() {
   const [criteria, setCriteria] = useState([]);
   const [filteredCriteria, setFilteredCriteria] = useState([]);
   const [totalsByCriterion, setTotalsByCriterion] = useState({});
+  const navigate = useNavigate();
 
   // Load criteria when activity changes
   const handleActivityChange = function (activity) {
@@ -78,6 +80,11 @@ function EvaluationScreen() {
 
   return (
     <div>
+
+      <button className="back-to-menu-button" onClick={() => navigate('/menu')}>
+        Back to Menu
+      </button>
+
       <h1>Evaluate teams</h1>
 
       <div className="evaluation-screen-section">

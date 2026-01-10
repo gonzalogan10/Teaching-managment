@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import CourseSelector from  "../components/CourseSelector.jsx";
 import ActivityList from "../components/ActivityList.jsx";
 import TaskCreator from "../components/TaskCreator.jsx";
 import TaskList from "../components/TaskList.jsx";
 import TaskReport from "../components/TaskReport.jsx";
+import BackToMenuButton from "../components/BackToMenuButton.jsx";
 import './Screen.css';
 
 function ActivityScreen() {
   const [courseId, setCourseId] = useState(null);
   const [selectedActivityId, setSelectedActivityId] = useState(null);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const navigate = useNavigate();
 
   // Reset activity and task when course changes
   useEffect(() => {
@@ -19,6 +22,11 @@ function ActivityScreen() {
 
   return (
     <div>
+
+      <button className="back-to-menu-button" onClick={() => navigate('/menu')}>
+        Back to Menu
+      </button>
+
       <h1>Teaching Management</h1>
       
       <div className="activity-screen-course-section">
