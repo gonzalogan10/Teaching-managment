@@ -173,3 +173,12 @@
 .menu-button.red:hover {
   transform: translateY(-1px);
 }
+
+/* GoToPageButton Styles */
+.go-to-page-button {
+  background-color: #3ab38b;
+}
+
+.go-to-page-button:hover {
+  background-color: #2a9d7a;
+}

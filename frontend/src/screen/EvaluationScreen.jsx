@@ -81,7 +81,7 @@ function EvaluationScreen() {
   return (
     <div>
 
-      <button className="back-to-menu-button" onClick={() => navigate('/menu')}>
+      <button className="go-to-page-button" onClick={() => navigate('/menu')}>
         Back to Menu
       </button>
 
