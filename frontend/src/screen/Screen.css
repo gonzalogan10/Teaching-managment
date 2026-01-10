@@ -176,6 +176,10 @@
 
 /* GoToPageButton Styles */
 .go-to-page-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
   background-color: #3ab38b;
 }
 
