@@ -203,124 +203,30 @@ WHERE NOT EXISTS (
     SELECT 1 FROM solver WHERE id = 4
 );
 
--- TASKS
-INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-SELECT 1, 'Project Setup', 'Initialize the project repository and development environment', 'PROJECT', 1, '2026-01-06', '2026-01-10', 1, 1
-WHERE NOT EXISTS (
-    SELECT 1 FROM task WHERE id = 1
-);
+-- TASKS (without explicit IDs - let H2 auto-generate them)
+INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+VALUES ('Project Setup', 'Initialize the project repository and development environment', 'PROJECT', 1, '2026-01-06', '2026-01-10', 1, 1);
 
-INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-SELECT 2, 'Implementation Phase', 'Develop the core functionality of the project', 'PROJECT', 2, '2026-01-11', '2026-01-20', 1, 2
-WHERE NOT EXISTS (
-    SELECT 1 FROM task WHERE id = 2
-);
+INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+VALUES ('Implementation Phase', 'Develop the core functionality of the project', 'PROJECT', 2, '2026-01-11', '2026-01-20', 1, 2);
 
-INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-SELECT 3, 'Testing and Debugging', 'Write unit tests and fix any issues found', 'PROJECT', 3, '2026-01-21', '2026-01-25', 1, 1
-WHERE NOT EXISTS (
-    SELECT 1 FROM task WHERE id = 3
-);
+INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+VALUES ('Testing and Debugging', 'Write unit tests and fix any issues found', 'PROJECT', 3, '2026-01-21', '2026-01-25', 1, 1);
 
-INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-SELECT 4, 'Introduction to IVS', 'Overview of IVS concepts and principles', 'LECTURE', 1, '2026-01-06', '2026-01-06', 2, 3
-WHERE NOT EXISTS (
-    SELECT 1 FROM task WHERE id = 4
-);
+INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+VALUES ('Introduction to IVS', 'Overview of IVS concepts and principles', 'LECTURE', 1, '2026-01-06', '2026-01-06', 2, 3);
 
-INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-SELECT 5, 'Advanced Concepts', 'Deep dive into advanced IVS topics', 'LECTURE', 2, '2026-01-13', '2026-01-13', 2, 4
-WHERE NOT EXISTS (
-    SELECT 1 FROM task WHERE id = 5
-);
+INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+VALUES ('Advanced Concepts', 'Deep dive into advanced IVS topics', 'LECTURE', 2, '2026-01-13', '2026-01-13', 2, 4);
 
-INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-SELECT 6, 'Midterm Test', 'Comprehensive test covering all course material', 'EXAM', 1, '2026-01-27', '2026-01-27', 3, NULL
-WHERE NOT EXISTS (
-    SELECT 1 FROM task WHERE id = 6
-);
+INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+VALUES ('Midterm Test', 'Comprehensive test covering all course material', 'EXAM', 1, '2026-01-27', '2026-01-27', 3, NULL);
 
-INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-SELECT 7, 'Schema Design', 'Design the database schema for the project', 'PROJECT', 1, '2026-01-06', '2026-01-12', 4, 2
-WHERE NOT EXISTS (
-    SELECT 1 FROM task WHERE id = 7
-);
+INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+VALUES ('Schema Design', 'Design the database schema for the project', 'PROJECT', 1, '2026-01-06', '2026-01-12', 4, 2);
 
-INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-SELECT 8, 'SQL Implementation', 'Implement SQL scripts for the database', 'PROJECT', 2, '2026-01-13', '2026-01-18', 4, 3
-WHERE NOT EXISTS (
-    SELECT 1 FROM task WHERE id = 8
-);
+INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+VALUES ('SQL Implementation', 'Implement SQL scripts for the database', 'PROJECT', 2, '2026-01-13', '2026-01-18', 4, 3);
 
-INSERT INTO task (id, title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-SELECT 9, 'SQL Queries Practice', 'Write and optimize SQL queries', 'LECTURE', 1, '2026-01-15', '2026-01-19', 5, 4
-WHERE NOT EXISTS (
-    SELECT 1 FROM task WHERE id = 9
-);
-
--- TASK SOLVERS (many-to-many relationships)
-INSERT INTO task_solvers (task_id, solvers_id)
-SELECT 1, 1
-WHERE NOT EXISTS (
-    SELECT 1 FROM task_solvers WHERE task_id = 1 AND solvers_id = 1
-);
-
-INSERT INTO task_solvers (task_id, solvers_id)
-SELECT 1, 2
-WHERE NOT EXISTS (
-    SELECT 1 FROM task_solvers WHERE task_id = 1 AND solvers_id = 2
-);
-
-INSERT INTO task_solvers (task_id, solvers_id)
-SELECT 2, 2
-WHERE NOT EXISTS (
-    SELECT 1 FROM task_solvers WHERE task_id = 2 AND solvers_id = 2
-);
-
-INSERT INTO task_solvers (task_id, solvers_id)
-SELECT 2, 3
-WHERE NOT EXISTS (
-    SELECT 1 FROM task_solvers WHERE task_id = 2 AND solvers_id = 3
-);
-
-INSERT INTO task_solvers (task_id, solvers_id)
-SELECT 3, 1
-WHERE NOT EXISTS (
-    SELECT 1 FROM task_solvers WHERE task_id = 3 AND solvers_id = 1
-);
-
-INSERT INTO task_solvers (task_id, solvers_id)
-SELECT 3, 4
-WHERE NOT EXISTS (
-    SELECT 1 FROM task_solvers WHERE task_id = 3 AND solvers_id = 4
-);
-
-INSERT INTO task_solvers (task_id, solvers_id)
-SELECT 4, 3
-WHERE NOT EXISTS (
-    SELECT 1 FROM task_solvers WHERE task_id = 4 AND solvers_id = 3
-);
-
-INSERT INTO task_solvers (task_id, solvers_id)
-SELECT 5, 4
-WHERE NOT EXISTS (
-    SELECT 1 FROM task_solvers WHERE task_id = 5 AND solvers_id = 4
-);
-
-INSERT INTO task_solvers (task_id, solvers_id)
-SELECT 7, 2
-WHERE NOT EXISTS (
-    SELECT 1 FROM task_solvers WHERE task_id = 7 AND solvers_id = 2
-);
-
-INSERT INTO task_solvers (task_id, solvers_id)
-SELECT 8, 3
-WHERE NOT EXISTS (
-    SELECT 1 FROM task_solvers WHERE task_id = 8 AND solvers_id = 3
-);
-
-INSERT INTO task_solvers (task_id, solvers_id)
-SELECT 9, 4
-WHERE NOT EXISTS (
-    SELECT 1 FROM task_solvers WHERE task_id = 9 AND solvers_id = 4
-);
+INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
+VALUES ('SQL Queries Practice', 'Write and optimize SQL queries', 'LECTURE', 1, '2026-01-15', '2026-01-19', 5, 4);
