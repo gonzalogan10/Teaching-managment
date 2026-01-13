@@ -14,6 +14,7 @@ function ActivityScreen() {
   const [selectedActivityId, setSelectedActivityId] = useState(null);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [selectedTeamId, setSelectedTeamId] = useState(null);
+  const [taskListRefresh, setTaskListRefresh] = useState(0);
   const teamListRef = useRef(null);
   const navigate = useNavigate();
 
@@ -28,6 +29,11 @@ function ActivityScreen() {
     if (teamListRef.current) {
       teamListRef.current.refreshTeams();
     }
+  };
+
+  const handleTaskCreated = () => {
+    // Trigger TaskList to refresh
+    setTaskListRefresh(prev => prev + 1);
   };
 
   return (
@@ -63,8 +69,8 @@ function ActivityScreen() {
 
       {selectedActivityId && (
         <div className="activity-screen-tasks-section">
-          <TaskCreator activityId={selectedActivityId} />
-          <TaskList activityId={selectedActivityId} onTaskSelect={setSelectedTaskId} selectedTaskId={selectedTaskId} />
+          <TaskCreator activityId={selectedActivityId} onTaskCreated={handleTaskCreated} />
+          <TaskList activityId={selectedActivityId} onTaskSelect={setSelectedTaskId} selectedTaskId={selectedTaskId} refreshTrigger={taskListRefresh} />
           {selectedTaskId && <TaskReport courseId={courseId} taskId={selectedTaskId} />}
         </div>
       )}

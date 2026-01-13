@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 
-function TaskList({ activityId, onTaskSelect, selectedTaskId }) {
+function TaskList({ activityId, onTaskSelect, selectedTaskId, refreshTrigger }) {
   const [tasks, setTasks] = useState([]);
   const [solvers, setSolvers] = useState([]);
   const [error, setError] = useState(null);
@@ -52,7 +52,7 @@ function TaskList({ activityId, onTaskSelect, selectedTaskId }) {
       .catch(error => {
         console.error("Error fetching solvers:", error);
       });
-  }, [activityId]);
+  }, [activityId, refreshTrigger]);
 
   const handleAddSolver = (taskId, solverId) => {
     // Check if solver is already in the task
@@ -186,6 +186,52 @@ function TaskList({ activityId, onTaskSelect, selectedTaskId }) {
       });
   };
 
+  const handleDeleteTask = (taskId) => {
+    if (!window.confirm('Are you sure you want to delete this task?')) {
+      return;
+    }
+
+    fetch(`http://localhost:8080/api/tasks/${taskId}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": "Basic " + btoa("teacher1:test"),
+        "Content-Type": "application/json"
+      },
+      credentials: 'include'
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to delete task');
+        return response.text();
+      })
+      .then(() => {
+        // Reload tasks to get updated data
+        return fetch(`http://localhost:8080/api/tasks/activity/${activityId}`, {
+          method: "GET",
+          headers: {
+            "Authorization": "Basic " + btoa("teacher1:test"),
+            "Content-Type": "application/json"
+          },
+          credentials: 'include'
+        });
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch updated tasks');
+        return response.json();
+      })
+      .then(data => {
+        setTasks(Array.isArray(data) ? data : []);
+        if (selectedTaskId === taskId) {
+          if (onTaskSelect) {
+            onTaskSelect(null);
+          }
+        }
+      })
+      .catch(error => {
+        console.error("Error deleting task:", error);
+        alert('Failed to delete task: ' + error.message);
+      });
+  };
+
   if (!activityId) {
     return null;
   }
@@ -246,16 +292,28 @@ const getTaskTypeLabel = (type) => {
                       {getTaskTypeLabel(task.type || 'LECTURE')}
                     </div>
                   </div>
-                  <div className="task-solver-info">
-                    {task.mainSolver ? (
-                      <span className="task-has-solver">
-                        👤 {task.mainSolver.name}
-                      </span>
-                    ) : (
-                      <span className="task-no-solver">
-                        ⚠️ No Main Solver
-                      </span>
-                    )}
+                  <div className="task-actions-section">
+                    <div className="task-solver-info">
+                      {task.mainSolver ? (
+                        <span className="task-has-solver">
+                          👤 {task.mainSolver.name}
+                        </span>
+                      ) : (
+                        <span className="task-no-solver">
+                          ⚠️ No Main Solver
+                        </span>
+                      )}
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteTask(task.id);
+                      }}
+                      className="task-delete-button"
+                      title="Delete task"
+                    >
+                      🗑️
+                    </button>
                   </div>
                 </div>
               </div>

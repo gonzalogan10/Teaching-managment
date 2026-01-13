@@ -43,4 +43,8 @@ public class ActivityService {
     public List<Activity> findByCourseId(Long courseId) {
         return activityRepository.findByCourseId(courseId);
     }
+
+    public void deleteActivity(Long activityId) {
+        activityRepository.deleteById(activityId);
+    }
 }

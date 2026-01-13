@@ -2,6 +2,7 @@ package com.example.teachingmanagement.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,5 +77,10 @@ public class ReportController {
     @GetMapping("/task/{taskId}")
     public List<Report> getReportsByTask(@PathVariable Long taskId) {
         return service.findByTask(taskId);
+    }
+
+    @DeleteMapping("/{reportId}")
+    public void deleteReport(@PathVariable Long reportId) {
+        service.deleteReport(reportId);
     }
 }

@@ -91,4 +91,13 @@ public class ActivityController {
     public List<Solver> getSolversForActivity(@PathVariable Long activityId) {
         return service.findById(activityId).getSolvers();
     }
+
+    /**
+     * Delete an activity by ID
+     * @param activityId ID of the activity to delete
+     */
+    @DeleteMapping("/{activityId}")
+    public void deleteActivity(@PathVariable Long activityId) {
+        service.deleteActivity(activityId);
+    }
 }

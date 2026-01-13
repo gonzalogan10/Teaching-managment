@@ -42,4 +42,8 @@ public class TaskService {
    public List<Task> findByActivityId(Long activityId) {
         return repository.findByActivityId(activityId);
    }
+
+   public void deleteTask(Long taskId) {
+        repository.deleteById(taskId);
+   }
 }

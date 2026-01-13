@@ -47,4 +47,8 @@ public class ReportService {
         Task task = taskService.findById(taskId);
         return repository.findByTask(task);
     }
+
+    public void deleteReport(Long reportId) {
+        repository.deleteById(reportId);
+    }
 }
