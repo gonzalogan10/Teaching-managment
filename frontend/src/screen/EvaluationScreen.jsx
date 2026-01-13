@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import CourseSelector from "../components/CourseSelector";
 import ActivitySelector from "../components/ActivitySelector";
 import TeamSelector from "../components/TeamSelector";
 import CriterionFilter from "../components/CriterionFilter";
 import EvaluationForm from "../components/EvaluationForm";
+import EvaluationList from "../components/EvaluationList";
 import TotalsPanel from "../components/TotalsCalculator";
 import "./Screen.css";
 
@@ -15,6 +16,7 @@ function EvaluationScreen() {
   const [criteria, setCriteria] = useState([]);
   const [filteredCriteria, setFilteredCriteria] = useState([]);
   const [totalsByCriterion, setTotalsByCriterion] = useState({});
+  const [evaluationRefresh, setEvaluationRefresh] = useState(0);
   const navigate = useNavigate();
 
   // Reset activity and team when course changes
@@ -67,10 +69,88 @@ function EvaluationScreen() {
     setTotalsByCriterion(updated);
   }
 
-  // When team changes, just set the team (keep existing form values)
-    const handleTeamChange = (team) => setSelectedTeam(team);
-    //uses a lambda function. It means that when the team changes,
-    // the function will be called with the new team as argument, and it will set the selectedTeam state to that new team.
+  // Trigger evaluation list refresh when form saves
+  function handleEvaluationSaved() {
+    setEvaluationRefresh(evaluationRefresh + 1);
+    // Load assessments to update totals
+    if (selectedTeam?.id) {
+      fetch(`http://localhost:8080/api/evaluations/team/${selectedTeam.id}`, {
+        method: "GET",
+        headers: {
+          "Authorization": "Basic " + btoa("teacher1:test"),
+          "Content-Type": "application/json"
+        },
+        credentials: 'include'
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Update totals based on saved assessments
+          const newTotals = {};
+          if (Array.isArray(data) && data.length > 0) {
+            const teamSize = data[0].teamSize || 1;
+            // Sum all points per criterion (each member has the same points)
+            data.forEach(assessment => {
+              const criterionId = assessment.criterionId;
+              if (criterionId) {
+                if (!newTotals[criterionId]) {
+                  newTotals[criterionId] = { team: 0, studentsSum: 0 };
+                }
+                newTotals[criterionId].studentsSum += (assessment.points || 0);
+              }
+            });
+            // Team = total sum, Students = sum / teamSize (points per student)
+            Object.keys(newTotals).forEach(criterionId => {
+              const totalSum = newTotals[criterionId].studentsSum;
+              newTotals[criterionId].team = totalSum;
+              newTotals[criterionId].studentsSum = totalSum / teamSize;
+            });
+          }
+          setTotalsByCriterion(newTotals);
+        })
+        .catch(error => console.error("Error fetching assessments:", error));
+    }
+  }
+
+  // When team changes, load existing evaluations
+  const handleTeamChange = (team) => {
+    setSelectedTeam(team);
+    // Load existing assessments to show totals
+    if (team?.id) {
+      fetch(`http://localhost:8080/api/evaluations/team/${team.id}`, {
+        method: "GET",
+        headers: {
+          "Authorization": "Basic " + btoa("teacher1:test"),
+          "Content-Type": "application/json"
+        },
+        credentials: 'include'
+      })
+        .then(response => response.json())
+        .then(data => {
+          const newTotals = {};
+          if (Array.isArray(data) && data.length > 0) {
+            const teamSize = data[0].teamSize || 1;
+            // Sum all points per criterion (each member has the same points)
+            data.forEach(assessment => {
+              const criterionId = assessment.criterionId;
+              if (criterionId) {
+                if (!newTotals[criterionId]) {
+                  newTotals[criterionId] = { team: 0, studentsSum: 0 };
+                }
+                newTotals[criterionId].studentsSum += (assessment.points || 0);
+              }
+            });
+            // Team = total sum, Students = sum / teamSize (points per student)
+            Object.keys(newTotals).forEach(criterionId => {
+              const totalSum = newTotals[criterionId].studentsSum;
+              newTotals[criterionId].team = totalSum;
+              newTotals[criterionId].studentsSum = totalSum / teamSize;
+            });
+          }
+          setTotalsByCriterion(newTotals);
+        })
+        .catch(error => console.error("Error fetching assessments:", error));
+    }
+  };
 
   // Render evaluation forms for filtered criteria. Rendering is creating React elements.
     function renderForms() {
@@ -79,6 +159,7 @@ function EvaluationScreen() {
             const crit = filteredCriteria[i];
             forms.push(
                 <EvaluationForm
+                    onSaved={handleEvaluationSaved}
                     key={crit.id}
                     team={selectedTeam}
                     activity={selectedActivity}
@@ -126,6 +207,7 @@ function EvaluationScreen() {
 
       {selectedTeam && selectedActivity && (
         <div className="evaluation-screen-section">
+          <EvaluationList teamId={selectedTeam?.id} criteria={criteria} refreshTrigger={evaluationRefresh} />
           {renderForms()}
         </div>
       )}
