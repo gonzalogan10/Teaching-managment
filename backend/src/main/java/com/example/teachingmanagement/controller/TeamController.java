@@ -1,6 +1,7 @@
 package com.example.teachingmanagement.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.teachingmanagement.dto.StudentDTO;
+import com.example.teachingmanagement.dto.TeamDTO;
+import com.example.teachingmanagement.dto.TeamMembershipDTO;
 import com.example.teachingmanagement.model.Team;
 import com.example.teachingmanagement.service.TeamService;
 
@@ -23,19 +27,37 @@ public class TeamController {
         this.service = service;
     }
 
+    private TeamDTO convertToDTO(Team team) {
+        List<TeamMembershipDTO> membershipDTOs = team.getMemberships() != null ?
+            team.getMemberships().stream()
+                .map(m -> new TeamMembershipDTO(
+                    m.getId(),
+                    new StudentDTO(
+                        m.getStudent().getId(),
+                        m.getStudent().getFirstName(),
+                        m.getStudent().getLastName(),
+                        m.getStudent().getEmail()
+                    )
+                ))
+                .collect(Collectors.toList()) : List.of();
+        return new TeamDTO(team.getId(), team.getName(), membershipDTOs);
+    }
+
     @PostMapping
-    public Team create(@RequestBody Team team) {
-        return service.save(team);
+    public TeamDTO create(@RequestBody Team team) {
+        return convertToDTO(service.save(team));
     }
 
     @GetMapping
-    public List<Team> getAll() {
-        return service.findAll();
+    public List<TeamDTO> getAll() {
+        return service.findAll().stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public Team getById(@PathVariable Long id) {
-        return service.findById(id);
+    public TeamDTO getById(@PathVariable Long id) {
+        return convertToDTO(service.findById(id));
     }
 
     /**
@@ -45,8 +67,8 @@ public class TeamController {
      * @return
      */
     @PostMapping("/course/{courseId}")
-    public Team createTeamForCourse(@PathVariable Long courseId, @RequestBody Team team) {
-        return service.createTeamForCourse(courseId, team);
+    public TeamDTO createTeamForCourse(@PathVariable Long courseId, @RequestBody Team team) {
+        return convertToDTO(service.createTeamForCourse(courseId, team));
     }
 
     /**
@@ -55,8 +77,10 @@ public class TeamController {
      * @return
      */
     @GetMapping("/course/{courseId}")
-    public List<Team> getTeamsByCourse(@PathVariable Long courseId) {
-        return service.findByCourseId(courseId);
+    public List<TeamDTO> getTeamsByCourse(@PathVariable Long courseId) {
+        return service.findByCourseId(courseId).stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
     }
 
     @DeleteMapping("/{id}")

@@ -19,7 +19,6 @@ public class TeamMembership {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JsonIgnore
     private Student student;
 
     @ManyToOne(optional = false)
@@ -27,6 +26,7 @@ public class TeamMembership {
     private Team team;
 
     @ManyToOne(optional = true)
+    @JsonIgnore
     private Activity activity;
 
     public TeamMembership() {}
