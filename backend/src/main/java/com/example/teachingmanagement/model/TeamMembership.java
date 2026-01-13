@@ -1,9 +1,17 @@
 package com.example.teachingmanagement.model;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"student_id", "activity_id"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"student_id", "team_id"}))
 public class TeamMembership {
 
     @Id
@@ -11,15 +19,23 @@ public class TeamMembership {
     private Long id;
 
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Student student;
 
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Team team;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Activity activity;
 
     public TeamMembership() {}
+
+    public TeamMembership(Student student, Team team) {
+        this.student = student;
+        this.team = team;
+        this.activity = null;
+    }
 
     public TeamMembership(Student student, Team team, Activity activity) {
         this.student = student;

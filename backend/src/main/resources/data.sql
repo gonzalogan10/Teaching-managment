@@ -72,22 +72,22 @@ WHERE NOT EXISTS (
     SELECT 1 FROM activity WHERE id = 7
 );
 
-INSERT INTO team (id, name)
-SELECT 1, 'Team A'
+INSERT INTO team (name, course_id)
+SELECT 'Team A', 1
 WHERE NOT EXISTS (
-    SELECT 1 FROM team WHERE id = 1
+    SELECT 1 FROM team WHERE name = 'Team A' AND course_id = 1
 );
 
-INSERT INTO team (id, name)
-SELECT 2, 'Team B'
+INSERT INTO team (name, course_id)
+SELECT 'Team B', 1
 WHERE NOT EXISTS (
-    SELECT 1 FROM team WHERE id = 2
+    SELECT 1 FROM team WHERE name = 'Team B' AND course_id = 1
 );
 
-INSERT INTO team (id, name)
-SELECT 3, 'Team C'
+INSERT INTO team (name, course_id)
+SELECT 'Team C', 2
 WHERE NOT EXISTS (
-    SELECT 1 FROM team WHERE id = 3
+    SELECT 1 FROM team WHERE name = 'Team C' AND course_id = 2
 );
 
 INSERT INTO student (id, first_name, last_name, email)
@@ -126,20 +126,6 @@ WHERE NOT EXISTS (
     SELECT 1 FROM student WHERE email = 'frank@fit.cvut.cz'
 );
 
-INSERT INTO team_membership (id, student_id, team_id, activity_id)
-SELECT 1, 1, 1, 1
-WHERE NOT EXISTS (
-    SELECT 1 FROM team_membership
-    WHERE student_id = 1 AND activity_id = 1
-);
-
-INSERT INTO team_membership (id, student_id, team_id, activity_id)
-SELECT 2, 2, 1, 1
-WHERE NOT EXISTS (
-    SELECT 1 FROM team_membership
-    WHERE student_id = 2 AND activity_id = 1
-);
-
 INSERT INTO criterion
 (id, category, name, checking_procedure,
  evaluation_method, max_points, points_redistribution, default_feedback)
@@ -158,24 +144,6 @@ SELECT
 'PER_STUDENT', 10, false, ''
 WHERE NOT EXISTS (
     SELECT 1 FROM criterion WHERE id = 2
-);
-
-INSERT INTO assessment (id, criterion_id, membership_id, points, feedback)
-SELECT 1, 1, 1, 18, 'Well organized'
-WHERE NOT EXISTS (
-    SELECT 1 FROM assessment WHERE id = 1
-);
-
-INSERT INTO assessment (id, criterion_id, membership_id, points, feedback)
-SELECT 2, 2, 1, 7, 'Good effort'
-WHERE NOT EXISTS (
-    SELECT 1 FROM assessment WHERE id = 2
-);
-
-INSERT INTO assessment (id, criterion_id, membership_id, points, feedback)
-SELECT 3, 2, 2, 9, 'Excellent'
-WHERE NOT EXISTS (
-    SELECT 1 FROM assessment WHERE id = 3
 );
 
 -- SOLVERS

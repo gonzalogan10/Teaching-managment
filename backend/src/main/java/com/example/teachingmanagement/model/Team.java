@@ -1,8 +1,16 @@
 package com.example.teachingmanagement.model;
 
-import jakarta.persistence.*;
-
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Team {
@@ -13,6 +21,10 @@ public class Team {
 
     private String name;
 
+    @ManyToOne
+    @JsonIgnore
+    private Course course;
+
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<TeamMembership> memberships;
 
@@ -22,9 +34,17 @@ public class Team {
         this.name = name;
     }
 
+    public Team(String name, Course course) {
+        this.name = name;
+        this.course = course;
+    }
+
     public Long getId() { return id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public Course getCourse() { return course; }
+    public void setCourse(Course course) { this.course = course; }
 
     public List<TeamMembership> getMemberships() {
         return memberships;
