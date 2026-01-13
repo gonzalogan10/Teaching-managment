@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import CourseSelector from  "../components/CourseSelector.jsx";
 import ActivityList from "../components/ActivityList.jsx";
@@ -14,6 +14,7 @@ function ActivityScreen() {
   const [selectedActivityId, setSelectedActivityId] = useState(null);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [selectedTeamId, setSelectedTeamId] = useState(null);
+  const teamListRef = useRef(null);
   const navigate = useNavigate();
 
   // Reset activity and task when course changes
@@ -22,6 +23,12 @@ function ActivityScreen() {
     setSelectedTaskId(null);
     setSelectedTeamId(null);
   }, [courseId]);
+
+  const handleTeamCreated = () => {
+    if (teamListRef.current) {
+      teamListRef.current.refreshTeams();
+    }
+  };
 
   return (
     <div>
@@ -47,8 +54,8 @@ function ActivityScreen() {
       {courseId && (
         <div className="activity-screen-teams-section">
           <h2>Team Management</h2>
-          <TeamCreator courseId={courseId} />
-          <TeamList courseId={courseId} onTeamSelect={setSelectedTeamId} selectedTeamId={selectedTeamId} />
+          <TeamCreator courseId={courseId} onTeamCreated={handleTeamCreated} />
+          <TeamList ref={teamListRef} courseId={courseId} onTeamSelect={setSelectedTeamId} selectedTeamId={selectedTeamId} />
         </div>
       )}
 

@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import "./ComponentsStyle.css";
 
-function TeamList({ courseId, onTeamSelect, selectedTeamId }) {
+const TeamList = forwardRef(function TeamList({ courseId, onTeamSelect, selectedTeamId }, ref) {
   const [teams, setTeams] = useState([]);
   const [students, setStudents] = useState([]);
   const [error, setError] = useState(null);
   const [newMemberId, setNewMemberId] = useState({});
 
-  useEffect(() => {
+  const fetchTeams = () => {
     if (!courseId) return;
 
-    // Load teams for this course
     fetch(`http://localhost:8080/api/teams/course/${courseId}`, {
       method: "GET",
       headers: {
@@ -31,8 +30,9 @@ function TeamList({ courseId, onTeamSelect, selectedTeamId }) {
         console.error("Error fetching teams:", error);
         setError(error.message);
       });
+  };
 
-    // Load all students for assignment
+  const fetchStudents = () => {
     fetch("http://localhost:8080/api/students", {
       method: "GET",
       headers: {
@@ -52,7 +52,16 @@ function TeamList({ courseId, onTeamSelect, selectedTeamId }) {
       .catch(error => {
         console.error("Error fetching students:", error);
       });
+  };
+
+  useEffect(() => {
+    fetchTeams();
+    fetchStudents();
   }, [courseId]);
+
+  useImperativeHandle(ref, () => ({
+    refreshTeams: fetchTeams
+  }));
 
   const handleAddMember = (teamId, studentId) => {
     fetch(`http://localhost:8080/api/team-memberships/team/${teamId}/student/${studentId}`, {
@@ -73,6 +82,8 @@ function TeamList({ courseId, onTeamSelect, selectedTeamId }) {
       .then(updatedTeam => {
         setTeams(teams.map(t => t.id === teamId ? updatedTeam : t));
         setNewMemberId({ ...newMemberId, [teamId]: "" });
+        // Refresh teams to ensure we have the latest data
+        fetchTeams();
       })
       .catch(error => {
         console.error("Error adding member:", error);
@@ -210,6 +221,8 @@ function TeamList({ courseId, onTeamSelect, selectedTeamId }) {
       )}
     </div>
   );
-}
+});
+
+TeamList.displayName = 'TeamList';
 
 export default TeamList;
