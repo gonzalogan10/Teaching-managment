@@ -34,7 +34,7 @@ public class Activity {
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     @ManyToMany
     @JsonIgnore

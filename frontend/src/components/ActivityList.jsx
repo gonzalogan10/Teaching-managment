@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 
-function ActivityList({ courseId, onActivitySelect, selectedActivityId, onActivityDeleted }) {
+function ActivityList({ courseId, onActivitySelect, selectedActivityId, onActivityDeleted, refreshTrigger }) {
 const [activities, setActivities] = useState([]);
 const [error, setError] = useState(null);
 
@@ -30,7 +30,7 @@ useEffect(() => {
         console.error("Error fetching activities:", error);
         setError(error.message);
     });
-}, [courseId]);
+}, [courseId, refreshTrigger]);
 
 if (!courseId) {
     return null;
@@ -68,7 +68,7 @@ const handleDeleteActivity = (activityId) => {
     .then(response => {
         if (!response.ok) {
             throw new Error('Failed to delete activity');
-        }
+        } 
         alert("Activity deleted successfully");
         // Remove the deleted activity from the list
         setActivities(activities.filter(a => a.id !== activityId));

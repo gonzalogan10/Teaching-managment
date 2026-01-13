@@ -6,7 +6,7 @@ function MenuScreen() {
 
   return (
     <div>
-      <button className="go-to-page-button" onClick={() => navigate('/')}>
+      <button className="go-to-page-button home" onClick={() => navigate('/')}>
         Back to Home
       </button>
       <div className="menu-container">

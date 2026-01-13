@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import CourseSelector from  "../components/CourseSelector.jsx";
+import ActivityCreator from "../components/ActivityCreator.jsx";
 import ActivityList from "../components/ActivityList.jsx";
 import TaskCreator from "../components/TaskCreator.jsx";
 import TaskList from "../components/TaskList.jsx";
@@ -15,6 +16,7 @@ function ActivityScreen() {
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [selectedTeamId, setSelectedTeamId] = useState(null);
   const [taskListRefresh, setTaskListRefresh] = useState(0);
+  const [activityListRefresh, setActivityListRefresh] = useState(0);
   const teamListRef = useRef(null);
   const navigate = useNavigate();
 
@@ -36,10 +38,15 @@ function ActivityScreen() {
     setTaskListRefresh(prev => prev + 1);
   };
 
+  const handleActivityCreated = () => {
+    // Trigger ActivityList to refresh
+    setActivityListRefresh(prev => prev + 1);
+  };
+
   return (
     <div>
 
-      <button className="go-to-page-button" onClick={() => navigate('/menu')}>
+      <button className="go-to-page-button menu" onClick={() => navigate('/menu')}>
         Back to Menu
       </button>
 
@@ -65,7 +72,12 @@ function ActivityScreen() {
         </div>
       )}
 
-      {courseId && <ActivityList courseId={courseId} onActivitySelect={setSelectedActivityId} selectedActivityId={selectedActivityId} />}
+      {courseId && (
+        <div className="activity-screen-activities-section">
+          <ActivityCreator courseId={courseId} onActivityCreated={handleActivityCreated} />
+          <ActivityList courseId={courseId} onActivitySelect={setSelectedActivityId} selectedActivityId={selectedActivityId} refreshTrigger={activityListRefresh} />
+        </div>
+      )}
 
       {selectedActivityId && (
         <div className="activity-screen-tasks-section">

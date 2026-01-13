@@ -174,15 +174,26 @@
   transform: translateY(-1px);
 }
 
-/* GoToPageButton Styles */
-.go-to-page-button {
+.go-to-page-button.menu {
   position: fixed;
   top: 20px;
   left: 20px;
   z-index: 1000;
-  background-color: #3ab38b;
+  background-color: #d80000;
+  color: #ffffff;
+}
+
+
+.go-to-page-button.home {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  background-color: #0068d8;
+  color: #ffffff;
 }
 
 .go-to-page-button:hover {
-  background-color: #2a9d7a;
+  background-color: #cd0c0c;
+  border-color: rgb(253, 255, 164);
 }
