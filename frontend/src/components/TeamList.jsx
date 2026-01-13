@@ -110,9 +110,9 @@ function TeamList({ courseId, onTeamSelect, selectedTeamId }) {
 
   return (
     <div className="list-container">
-      <h3 className="team-list-header">
-        Teams
-      </h3>
+      <h2 className="team-list-header">
+        Teams in Course
+      </h2>
 
       {error && <p className="team-list-error">Error loading teams: {error}</p>}
 
