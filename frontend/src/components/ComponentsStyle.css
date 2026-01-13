@@ -326,6 +326,7 @@
 
 /* TaskCreator Styles */
 .task-container {
+  color: #004999;
   margin-top: 20px;
   padding: 15px;
   background-color: #f9f9f9;
@@ -496,6 +497,7 @@
 
 /* Criterion Filter Styles */
 .criterion-filter {
+  color: #004999;
   background: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -523,6 +525,7 @@
 
 /* Totals Panel Styles */
 .totals-panel {
+  color: #004999;
   margin-top: 30px;
   padding: 25px;
   background-color: #ffffff;
