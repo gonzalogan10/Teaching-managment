@@ -34,7 +34,11 @@ function ActivityCreator({ courseId, onActivityCreated }) {
       })
     })
       .then(response => {
-        if (!response.ok) throw new Error('Failed to create activity');
+        if (!response.ok) {
+          return response.text().then(text => {
+            throw new Error(`Server error (${response.status}): ${text}`);
+          });
+        }
         return response.json();
       })
       .then(newActivity => {

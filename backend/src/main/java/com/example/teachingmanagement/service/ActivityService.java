@@ -37,6 +37,8 @@ public class ActivityService {
         }
         Course course = courseService.findById(courseId);
         activity.setCourse(course);
+        // Don't set ID manually, let the database handle it
+        activity.setId(null);
         return activityRepository.save(activity);
     }
 

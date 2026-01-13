@@ -31,45 +31,45 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO activity (id, name, type, course_id)
-SELECT 1, 'Project 1', 'PROJECT', 1
+SELECT 100, 'Project 1', 'PROJECT', 1
 WHERE NOT EXISTS (
-    SELECT 1 FROM activity WHERE id = 1
+    SELECT 1 FROM activity WHERE id = 100
 );
 
 INSERT INTO activity (id, name, type, course_id)
-SELECT 2, 'Lectures', 'LECTURE', 1
+SELECT 101, 'Lectures', 'LECTURE', 1
 WHERE NOT EXISTS (
-    SELECT 1 FROM activity WHERE id = 2
+    SELECT 1 FROM activity WHERE id = 101
 );
 
 INSERT INTO activity (id, name, type, course_id)
-SELECT 3, 'Midterm Test', 'EXAM', 1
+SELECT 102, 'Midterm Test', 'EXAM', 1
 WHERE NOT EXISTS (
-    SELECT 1 FROM activity WHERE id = 3
+    SELECT 1 FROM activity WHERE id = 102
 );
 
 INSERT INTO activity (id, name, type, course_id)
-SELECT 4, 'Database Design', 'PROJECT', 2
+SELECT 103, 'Database Design', 'PROJECT', 2
 WHERE NOT EXISTS (
-    SELECT 1 FROM activity WHERE id = 4
+    SELECT 1 FROM activity WHERE id = 103
 );
 
 INSERT INTO activity (id, name, type, course_id)
-SELECT 5, 'SQL Basics', 'LECTURE', 2
+SELECT 104, 'SQL Basics', 'LECTURE', 2
 WHERE NOT EXISTS (
-    SELECT 1 FROM activity WHERE id = 5
+    SELECT 1 FROM activity WHERE id = 104
 );
 
 INSERT INTO activity (id, name, type, course_id)
-SELECT 6, 'Frontend Project', 'PROJECT', 3
+SELECT 105, 'Frontend Project', 'PROJECT', 3
 WHERE NOT EXISTS (
-    SELECT 1 FROM activity WHERE id = 6
+    SELECT 1 FROM activity WHERE id = 105
 );
 
 INSERT INTO activity (id, name, type, course_id)
-SELECT 7, 'React Workshop', 'LECTURE', 3
+SELECT 106, 'React Workshop', 'LECTURE', 3
 WHERE NOT EXISTS (
-    SELECT 1 FROM activity WHERE id = 7
+    SELECT 1 FROM activity WHERE id = 106
 );
 
 INSERT INTO team (name, course_id)
@@ -173,28 +173,28 @@ WHERE NOT EXISTS (
 
 -- TASKS (without explicit IDs - let H2 auto-generate them)
 INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-VALUES ('Project Setup', 'Initialize the project repository and development environment', 'PROJECT', 1, '2026-01-06', '2026-01-10', 1, 1);
+VALUES ('Project Setup', 'Initialize the project repository and development environment', 'PROJECT', 1, '2026-01-06', '2026-01-10', 100, 1);
 
 INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-VALUES ('Implementation Phase', 'Develop the core functionality of the project', 'PROJECT', 2, '2026-01-11', '2026-01-20', 1, 2);
+VALUES ('Implementation Phase', 'Develop the core functionality of the project', 'PROJECT', 2, '2026-01-11', '2026-01-20', 100, 2);
 
 INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-VALUES ('Testing and Debugging', 'Write unit tests and fix any issues found', 'PROJECT', 3, '2026-01-21', '2026-01-25', 1, 1);
+VALUES ('Testing and Debugging', 'Write unit tests and fix any issues found', 'PROJECT', 3, '2026-01-21', '2026-01-25', 100, 1);
 
 INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-VALUES ('Introduction to IVS', 'Overview of IVS concepts and principles', 'LECTURE', 1, '2026-01-06', '2026-01-06', 2, 3);
+VALUES ('Introduction to IVS', 'Overview of IVS concepts and principles', 'LECTURE', 1, '2026-01-06', '2026-01-06', 101, 3);
 
 INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-VALUES ('Advanced Concepts', 'Deep dive into advanced IVS topics', 'LECTURE', 2, '2026-01-13', '2026-01-13', 2, 4);
+VALUES ('Advanced Concepts', 'Deep dive into advanced IVS topics', 'LECTURE', 2, '2026-01-13', '2026-01-13', 101, 4);
 
 INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-VALUES ('Midterm Test', 'Comprehensive test covering all course material', 'EXAM', 1, '2026-01-27', '2026-01-27', 3, NULL);
+VALUES ('Midterm Test', 'Comprehensive test covering all course material', 'EXAM', 1, '2026-01-27', '2026-01-27', 102, NULL);
 
 INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-VALUES ('Schema Design', 'Design the database schema for the project', 'PROJECT', 1, '2026-01-06', '2026-01-12', 4, 2);
+VALUES ('Schema Design', 'Design the database schema for the project', 'PROJECT', 1, '2026-01-06', '2026-01-12', 103, 2);
 
 INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-VALUES ('SQL Implementation', 'Implement SQL scripts for the database', 'PROJECT', 2, '2026-01-13', '2026-01-18', 4, 3);
+VALUES ('SQL Implementation', 'Implement SQL scripts for the database', 'PROJECT', 2, '2026-01-13', '2026-01-18', 103, 3);
 
 INSERT INTO task (title, description, type, task_order, start_date, end_date, activity_id, main_solver_id)
-VALUES ('SQL Queries Practice', 'Write and optimize SQL queries', 'LECTURE', 1, '2026-01-15', '2026-01-19', 5, 4);
+VALUES ('SQL Queries Practice', 'Write and optimize SQL queries', 'LECTURE', 1, '2026-01-15', '2026-01-19', 104, 4);

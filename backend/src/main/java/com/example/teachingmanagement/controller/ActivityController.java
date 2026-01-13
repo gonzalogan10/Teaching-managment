@@ -51,7 +51,17 @@ public class ActivityController {
      */
     @PostMapping("/course/{courseId}")
     public Activity createActivityForCourse(@PathVariable Long courseId, @RequestBody Activity activity) {
-        return service.createActivityForCourse(courseId, activity);
+        try {
+            if (activity.getName() == null || activity.getName().trim().isEmpty()) {
+                throw new IllegalArgumentException("Activity name is required");
+            }
+            if (activity.getType() == null) {
+                throw new IllegalArgumentException("Activity type is required");
+            }
+            return service.createActivityForCourse(courseId, activity);
+        } catch (Exception e) {
+            throw new RuntimeException("Error creating activity: " + e.getMessage(), e);
+        }
     }
 
     /**
