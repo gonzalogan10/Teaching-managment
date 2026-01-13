@@ -40,6 +40,25 @@ public class SolverService {
         taskRepository.save(task);
     }
 
+    public void removeSolverFromTask(Long taskId, Long solverId) {
+
+        //First, search for the task and solver by their IDs
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        Solver solver = findById(solverId);
+
+        // Remove the solver from the task's solvers list
+        task.getSolvers().remove(solver);
+        
+        // If the removed solver was the main solver, clear the main solver
+        if (task.getMainSolver() != null && task.getMainSolver().getId().equals(solverId)) {
+            task.setMainSolver(null);
+        }
+        
+        taskRepository.save(task);
+    }
+
      public void setMainSolver(Long solverId, Long taskId) {
 
         //First, search for the task and solver by their IDs

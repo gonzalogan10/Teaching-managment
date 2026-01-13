@@ -203,7 +203,7 @@ The H2 console is enabled for development only and explicitly allowed in the sec
 #### Solver Endpoints
 - `POST /api/solvers` → Create a new solver
 - `GET /api/solvers` → Find all solvers
-- `POST /api/solvers/{solverId}/solver/{taskId}` → Adds a solver to a task in the solver list if it is not already present
+- `POST /api/solvers/{solverId}/tasks/{taskId}` → Adds a solver to a task in the solver list if it is not already present
 - `POST /api/solvers/{solverId}/main-solver/{taskId}` → Assign a solver as main solver for a task (adds to list if not already present)
 
 #### Report Endpoints

@@ -54,9 +54,103 @@ function TaskList({ activityId, onTaskSelect, selectedTaskId }) {
       });
   }, [activityId]);
 
+  const handleAddSolver = (taskId, solverId) => {
+    // Check if solver is already in the task
+    const task = tasks.find(t => t.id === taskId);
+    const solverIdNum = parseInt(solverId);
+    
+    if (task && task.solvers && task.solvers.some(s => s.id === solverIdNum)) {
+      alert('This solver is already assigned to this task');
+      return;
+    }
+    
+    if (task && task.mainSolver && task.mainSolver.id === solverIdNum) {
+      alert('This solver is already the main solver for this task');
+      return;
+    }
+
+    fetch(`http://localhost:8080/api/solvers/${solverId}/tasks/${taskId}`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Basic " + btoa("teacher1:test"),
+        "Content-Type": "application/json"
+      },
+      credentials: 'include'
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to add solver');
+        return response.text();
+      })
+      .then(() => {
+        // Reload tasks to get updated data
+        return fetch(`http://localhost:8080/api/tasks/activity/${activityId}`, {
+          method: "GET",
+          headers: {
+            "Authorization": "Basic " + btoa("teacher1:test"),
+            "Content-Type": "application/json"
+          },
+          credentials: 'include'
+        });
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch updated tasks');
+        return response.json();
+      })
+      .then(data => {
+        setTasks(Array.isArray(data) ? data : []);
+        setNewSolverId({ ...newSolverId, [taskId]: "" });
+        alert('Solver added successfully!');
+      })
+      .catch(error => {
+        console.error("Error adding solver:", error);
+        alert('Failed to add solver: ' + error.message);
+      });
+  };
+
+  const handleRemoveSolver = (taskId, solverId) => {
+    if (!window.confirm('Are you sure you want to remove this solver?')) {
+      return;
+    }
+
+    fetch(`http://localhost:8080/api/solvers/${solverId}/tasks/${taskId}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": "Basic " + btoa("teacher1:test"),
+        "Content-Type": "application/json"
+      },
+      credentials: 'include'
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to remove solver');
+        return response.text();
+      })
+      .then(() => {
+        // Reload tasks to get updated data
+        return fetch(`http://localhost:8080/api/tasks/activity/${activityId}`, {
+          method: "GET",
+          headers: {
+            "Authorization": "Basic " + btoa("teacher1:test"),
+            "Content-Type": "application/json"
+          },
+          credentials: 'include'
+        });
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch updated tasks');
+        return response.json();
+      })
+      .then(data => {
+        setTasks(Array.isArray(data) ? data : []);
+      })
+      .catch(error => {
+        console.error("Error removing solver:", error);
+        alert('Failed to remove solver: ' + error.message);
+      });
+  };
+
   const handleBecomeMainSolver = (taskId, solverId) => {
-    fetch(`http://localhost:8080/api/tasks/${taskId}/main-solver/${solverId}`, {
-      method: "PUT",
+    fetch(`http://localhost:8080/api/solvers/${solverId}/main-solver/${taskId}`, {
+      method: "POST",
       headers: {
         "Authorization": "Basic " + btoa("teacher1:test"),
         "Content-Type": "application/json"
@@ -65,10 +159,25 @@ function TaskList({ activityId, onTaskSelect, selectedTaskId }) {
     })
       .then(response => {
         if (!response.ok) throw new Error('Failed to assign solver');
+        return response.text();
+      })
+      .then(() => {
+        // Reload tasks to get updated data
+        return fetch(`http://localhost:8080/api/tasks/activity/${activityId}`, {
+          method: "GET",
+          headers: {
+            "Authorization": "Basic " + btoa("teacher1:test"),
+            "Content-Type": "application/json"
+          },
+          credentials: 'include'
+        });
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch updated tasks');
         return response.json();
       })
-      .then(updatedTask => {
-        setTasks(tasks.map(t => t.id === taskId ? updatedTask : t));
+      .then(data => {
+        setTasks(Array.isArray(data) ? data : []);
         setNewSolverId({ ...newSolverId, [taskId]: "" });
       })
       .catch(error => {
@@ -93,6 +202,16 @@ const getTaskTypeLabel = (type) => {
   const formatDate = (dateString) => {
     if (!dateString) return 'Not set';
     return new Date(dateString).toLocaleDateString('en-US');
+  };
+
+  const getTotalSolversCount = (task) => {
+    if (!task) return 0;
+    let count = task.solvers?.length || 0;
+    // If mainSolver exists and is not already in the solvers list, count it
+    if (task.mainSolver && !task.solvers?.some(s => s.id === task.mainSolver.id)) {
+      count += 1;
+    }
+    return count;
   };
 
   return (
@@ -164,12 +283,19 @@ const getTaskTypeLabel = (type) => {
 
                   <div className="task-solvers-section">
                     <strong className="task-solvers-header">
-                      Solvers ({task.solvers ? task.solvers.length : 0})
+                      Solvers ({getTotalSolversCount(task)})
                     </strong>
 
                     {task.mainSolver && (
                       <div className="task-main-solver">
                         <strong>Main Solver:</strong> {task.mainSolver.name}
+                        <button
+                          onClick={() => handleRemoveSolver(task.id, task.mainSolver.id)}
+                          className="task-solver-remove-button"
+                          title="Remove solver"
+                        >
+                          ✕
+                        </button>
                       </div>
                     )}
 
@@ -180,11 +306,52 @@ const getTaskTypeLabel = (type) => {
                         </p>
                         {task.solvers.filter(s => s.id !== task.mainSolver?.id).map(solver => (
                           <div key={solver.id} className="task-other-solver-item">
-                            • {solver.name}
+                            <span>• {solver.name}</span>
+                            <button
+                              onClick={() => handleRemoveSolver(task.id, solver.id)}
+                              className="task-solver-remove-button"
+                              title="Remove solver"
+                            >
+                              ✕
+                            </button>
                           </div>
                         ))}
                       </div>
                     )}
+
+                    <div className="task-add-solver-section">
+                      <p className="task-add-solver-label">
+                        <strong>Add Solver:</strong>
+                      </p>
+                      <div className="task-add-solver-controls">
+                        <select
+                          value={newSolverId[task.id] || ""}
+                          onChange={(e) => setNewSolverId({ ...newSolverId, [task.id]: e.target.value })}
+                          className="task-add-solver-select"
+                        >
+                          <option value="">Select a Solver</option>
+                          {solvers.filter(solver => 
+                            !task.solvers?.some(s => s.id === solver.id) && 
+                            (!task.mainSolver || task.mainSolver.id !== solver.id)
+                          ).map(solver => (
+                            <option key={solver.id} value={solver.id}>
+                              {solver.name}
+                            </option>
+                          ))}
+                        </select>
+                        <button
+                          onClick={() => {
+                            if (newSolverId[task.id]) {
+                              handleAddSolver(task.id, newSolverId[task.id]);
+                            }
+                          }}
+                          disabled={!newSolverId[task.id]}
+                          className="task-add-solver-button"
+                        >
+                          + Add Solver
+                        </button>
+                      </div>
+                    </div>
 
                     <div className="task-assign-section">
                       <p className="task-assign-label">
@@ -197,7 +364,10 @@ const getTaskTypeLabel = (type) => {
                           className="task-assign-select"
                         >
                           <option value="">Select a Solver</option>
-                          {solvers.map(solver => (
+                          {solvers.filter(solver => 
+                            !task.solvers?.some(s => s.id === solver.id) && 
+                            (!task.mainSolver || task.mainSolver.id !== solver.id)
+                          ).map(solver => (
                             <option key={solver.id} value={solver.id}>
                               {solver.name}
                             </option>

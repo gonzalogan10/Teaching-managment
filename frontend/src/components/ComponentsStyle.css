@@ -198,6 +198,9 @@
   border-radius: 4px;
   margin-bottom: 10px;
   border-left: 3px solid #4caf50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .task-other-solvers-section {
@@ -214,6 +217,71 @@
   color: #666;
   font-size: 0.9em;
   margin: 4px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-solver-remove-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  margin-left: 8px;
+}
+
+.task-solver-remove-button:hover {
+  background-color: #d32f2f;
+}
+
+.task-add-solver-section {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #e3f2fd;
+  border-radius: 4px;
+}
+
+.task-add-solver-label {
+  font-size: 0.9em;
+  color: #1976d2;
+  margin-bottom: 8px;
+}
+
+.task-add-solver-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.task-add-solver-select {
+  padding: 6px 8px;
+  border-radius: 3px;
+  border: 1px solid #1976d2;
+  font-size: 0.9em;
+  flex: 1;
+}
+
+.task-add-solver-button {
+  padding: 6px 12px;
+  border-radius: 3px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.task-add-solver-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .task-assign-section {

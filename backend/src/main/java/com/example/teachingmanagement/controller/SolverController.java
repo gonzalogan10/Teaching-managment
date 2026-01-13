@@ -43,4 +43,9 @@ public class SolverController {
     public void setMainSolver(@PathVariable Long solverId, @PathVariable Long taskId) {
         solverService.setMainSolver(solverId, taskId);
     }
+
+    @DeleteMapping("/{solverId}/tasks/{taskId}")
+    public void removeSolverFromTask(@PathVariable Long solverId, @PathVariable Long taskId) {
+        solverService.removeSolverFromTask(taskId, solverId);
+    }
 }
