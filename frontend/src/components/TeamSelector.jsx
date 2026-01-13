@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 
 function TeamSelector(props) {
-  // props: onSelect, selected, enabled
+  // props: onSelect, selected, enabled, courseId
   const [teams, setTeams] = useState([]);
 
   useEffect(function () {
-    fetch("http://localhost:8080/api/teams", {
+    if (!props.courseId) {
+      setTeams([]);
+      return;
+    }
+
+    fetch(`http://localhost:8080/api/teams/course/${props.courseId}`, {
       method: "GET",
       headers: {
         "Authorization": "Basic " + btoa("teacher1:test"),
@@ -24,7 +29,7 @@ function TeamSelector(props) {
       .catch(function (error) {
         console.error('Error:', error);
       });
-  }, []);
+  }, [props.courseId]);
 
   function handleSelect(team) {
     if (typeof props.onSelect === 'function') {

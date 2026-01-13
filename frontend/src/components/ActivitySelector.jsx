@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 
 function ActivitySelector(props) {
-  // props: onSelect, selected
+  // props: onSelect, selected, courseId
   const [activities, setActivities] = useState([]);
 
   useEffect(function () {
-    fetch("http://localhost:8080/api/activities", {
+    if (!props.courseId) {
+      setActivities([]);
+      return;
+    }
+
+    fetch(`http://localhost:8080/api/activities/course/${props.courseId}`, {
       method: "GET",
       headers: {
         "Authorization": "Basic " + btoa("teacher1:test"),
@@ -24,7 +29,7 @@ function ActivitySelector(props) {
       .catch(function (error) {
         console.error('Error:', error);
       });
-  }, []);
+  }, [props.courseId]);
 
 
   function handleChange(e) {
@@ -36,7 +41,7 @@ function ActivitySelector(props) {
   }
 
   return (
-    <select value={props.selected?.id || ""} onChange={handleChange}>
+    <select value={props.selected?.id || ""} onChange={handleChange} disabled={!props.courseId}>
       <option value="">Select activity</option>
       {activities.map(a => (
         <option key={a.id} value={a.id}>{a.name}</option>

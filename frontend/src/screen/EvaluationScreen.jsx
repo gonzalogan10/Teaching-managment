@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import CourseSelector from "../components/CourseSelector";
 import ActivitySelector from "../components/ActivitySelector";
 import TeamSelector from "../components/TeamSelector";
 import CriterionFilter from "../components/CriterionFilter";
@@ -8,12 +9,23 @@ import TotalsPanel from "../components/TotalsCalculator";
 import "./Screen.css";
 
 function EvaluationScreen() {
+  const [courseId, setCourseId] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [criteria, setCriteria] = useState([]);
   const [filteredCriteria, setFilteredCriteria] = useState([]);
   const [totalsByCriterion, setTotalsByCriterion] = useState({});
   const navigate = useNavigate();
+
+  // Reset activity and team when course changes
+  const handleCourseChange = (newCourseId) => {
+    setCourseId(newCourseId);
+    setSelectedActivity(null);
+    setSelectedTeam(null);
+    setCriteria([]);
+    setFilteredCriteria([]);
+    setTotalsByCriterion({});
+  };
 
   // Load criteria when activity changes
   const handleActivityChange = function (activity) {
@@ -88,14 +100,21 @@ function EvaluationScreen() {
       <h1>Evaluate teams</h1>
 
       <div className="evaluation-screen-section">
-        <h3>Activity</h3>
-        <ActivitySelector onSelect={handleActivityChange} selected={selectedActivity} />
+        <h3>Course</h3>
+        <CourseSelector onSelect={handleCourseChange} />
       </div>
+
+      {courseId && (
+        <div className="evaluation-screen-section">
+          <h3>Activity</h3>
+          <ActivitySelector onSelect={handleActivityChange} selected={selectedActivity} courseId={courseId} />
+        </div>
+      )}
 
       {selectedActivity && (
         <div className="evaluation-screen-section">
           <h3>Team</h3>
-          <TeamSelector onSelect={handleTeamChange} selected={selectedTeam} enabled={true} />
+          <TeamSelector onSelect={handleTeamChange} selected={selectedTeam} enabled={true} courseId={courseId} />
         </div>
       )}
 
