@@ -3,6 +3,8 @@ package com.example.teachingmanagement.service.email;
 import com.example.teachingmanagement.dto.email.CriterionResultDto;
 import com.example.teachingmanagement.dto.email.StudentPreviewDto;
 import com.example.teachingmanagement.dto.email.TeamEmailPreviewDto;
+import com.example.teachingmanagement.dto.email.EmailPreviewDto;
+import com.example.teachingmanagement.dto.email.TeamEmailPreviewsDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -79,5 +81,94 @@ public class EmailPreviewService {
 
         return new TeamEmailPreviewDto(activity.getCourse().getName(), activity.getName(), team.getName(),
                 teamResults, students, teamTotal);
+    }
+
+    public TeamEmailPreviewsDto buildTeamEmailPreviews(Long teamId) {
+
+        TeamEmailPreviewDto teamPreview = buildTeamPreview(teamId);
+
+        List<EmailPreviewDto> emails = new ArrayList<>();
+
+        for (StudentPreviewDto student : teamPreview.getStudentResults()) {
+
+            String subject = teamPreview.getCourse()
+                    + " – " + teamPreview.getActivity()
+                    + " – Evaluation results";
+
+            String body = buildEmailBody(teamPreview, student);
+
+            List<CriterionResultDto> allCriteria = new ArrayList<>();
+            allCriteria.addAll(teamPreview.getTeamResults());
+            allCriteria.addAll(student.getResults());
+
+            emails.add(new EmailPreviewDto(
+                    student.getFullName(),
+                    student.getEmail(),
+                    subject,
+                    body,
+                    student.getResults(),
+                    teamPreview.getTeamTotal(),
+                    student.getTotal()
+            ));
+        }
+
+        return new TeamEmailPreviewsDto(
+                teamPreview.getCourse(),
+                teamPreview.getActivity(),
+                teamPreview.getTeam(),
+                emails
+        );
+    }
+
+    private String buildEmailBody(TeamEmailPreviewDto team, StudentPreviewDto student) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Dear ").append(student.getFullName()).append(",\n\n");
+
+        sb.append("The evaluation for the activity \"")
+                .append(team.getActivity())
+                .append("\" in the course ")
+                .append(team.getCourse())
+                .append(" has been completed.\n\n");
+
+        sb.append("Team: ").append(team.getTeam()).append("\n\n");
+
+        sb.append("Team evaluation:\n");
+        for (CriterionResultDto r : team.getTeamResults()) {
+            sb.append("- ")
+                    .append(r.getName())
+                    .append(": ")
+                    .append(r.getPoints())
+                    .append("/")
+                    .append(r.getMaxPoints())
+                    .append("\n");
+        }
+
+        sb.append("Team total: ")
+                .append(team.getTeamTotal())
+                .append("\n\n");
+
+        sb.append("Your individual evaluation:\n");
+        for (CriterionResultDto r : student.getResults()) {
+            sb.append("- ")
+                    .append(r.getName())
+                    .append(": ")
+                    .append(r.getPoints())
+                    .append("/")
+                    .append(r.getMaxPoints())
+                    .append("\n");
+        }
+
+        sb.append("Your total: ")
+                .append(student.getTotal())
+                .append("\n\n");
+
+        sb.append("Your final total: ")
+                .append(student.getTotal() + team.getTeamTotal())
+                .append("\n\n");
+
+        sb.append("Best regards,\nThe teaching team");
+
+        return sb.toString();
     }
 }
