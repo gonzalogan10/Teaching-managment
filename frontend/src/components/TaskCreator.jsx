@@ -1,6 +1,12 @@
 import { useState } from "react";
 import "./ComponentsStyle.css";
 
+/**
+ * TaskCreator component allows teachers to create new tasks within a specific activity.
+ * It includes a form with fields for title, description, type, task order, start date, and end date.
+ * On submission, it sends a POST request to the backend API to create the task.
+ * Upon successful creation, it resets the form and notifies the parent component via onTaskCreated prop.
+ */
 function TaskCreator({ activityId, onTaskCreated }) {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({

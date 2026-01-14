@@ -7,7 +7,6 @@ import CriterionFilter from "../components/CriterionFilter";
 import CriterionCreator from "../components/CriterionCreator";
 import EvaluationForm from "../components/EvaluationForm";
 import EvaluationList from "../components/EvaluationList";
-import LoadCalculator from "../components/LoadCalculator";
 import "./Screen.css";
 
 function EvaluationScreen() {
@@ -18,7 +17,6 @@ function EvaluationScreen() {
   const [filteredCriteria, setFilteredCriteria] = useState([]);
   const [totalsByCriterion, setTotalsByCriterion] = useState({});
   const [evaluationRefresh, setEvaluationRefresh] = useState(0);
-  const [criteriaRefresh, setCriteriaRefresh] = useState(0);
   const navigate = useNavigate();
 
   // Reset activity and team when course changes
@@ -258,14 +256,8 @@ function EvaluationScreen() {
         <div className="evaluation-screen-section">
           <EvaluationList teamId={selectedTeam?.id} activityId={selectedActivity?.id} criteria={criteria} refreshTrigger={evaluationRefresh} />
           {renderForms()}
-
-          {/* Calculadora de carga de trabajo */}
-          <LoadCalculator activityId={selectedActivity?.id} />
         </div>
       )}
-
-
-
     </div>
   );
 }

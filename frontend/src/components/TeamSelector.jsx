@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 
+
+/**
+ * TeamSelector component allows selection of a team from a list of teams for a given course.
+ * It fetches teams when the courseId changes and displays them as buttons.
+ */
 function TeamSelector(props) {
   // props: onSelect, selected, enabled, courseId
   const [teams, setTeams] = useState([]);
@@ -8,7 +13,7 @@ function TeamSelector(props) {
   useEffect(function () {
     if (!props.courseId) {
       setTeams([]);
-      return;
+      return; 
     }
 
     fetch(`http://localhost:8080/api/teams/course/${props.courseId}`, {

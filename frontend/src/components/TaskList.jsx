@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 
+
+/**
+ * TaskList component displays a list of tasks for a given activity. 
+ * It allows selecting a task, deleting tasks, and managing solvers assigned to each task.
+ * Users can add or remove solvers and assign a main solver for each task.
+ */
 function TaskList({ activityId, onTaskSelect, selectedTaskId, refreshTrigger }) {
   const [tasks, setTasks] = useState([]);
   const [solvers, setSolvers] = useState([]);

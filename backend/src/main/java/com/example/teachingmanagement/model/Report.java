@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 @Entity
 public class Report {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //generated value means the database will automatically generate a unique value for this fiel
     private Long id;
 
     @Column(length = 2000)

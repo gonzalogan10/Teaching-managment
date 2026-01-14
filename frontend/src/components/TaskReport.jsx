@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import "./ComponentsStyle.css";
 
+/**
+ * TaskReport component allows teachers to submit and view work reports for a specific task.
+ * Teachers can select a solver, describe the work done, and provide details such as time spent,
+ * proportion of work, and number of students evaluated. Existing reports can be viewed and deleted.
+ * It fetches solvers and existing reports from the backend API and handles report submission and deletion.
+ */
 function TaskReport({ courseId, taskId, onReportCreated }) {
   const [showReportForm, setShowReportForm] = useState(false);
   const [solvers, setSolvers] = useState([]);

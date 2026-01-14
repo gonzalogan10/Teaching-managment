@@ -1,6 +1,12 @@
 import { useState } from "react";
 import "./ComponentsStyle.css";
 
+/**
+ * TeamCreator component allows teachers to create new teams within a specific course.
+ * It includes a form with a field for the team name, and handles form submission
+ * to create the team via a POST request to the backend API. 
+ * Upon successful creation, it resets the form and notifies the parent component via onTeamCreated prop.
+ */
 function TeamCreator({ courseId, onTeamCreated }) {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({

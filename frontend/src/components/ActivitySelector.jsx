@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 
+/**
+ * Selector component to choose an activity from a list of activities for a given course.
+ * It fetches activities when the courseId changes and populates a dropdown select element.
+ */
 function ActivitySelector(props) {
   // props: onSelect, selected, courseId
   const [activities, setActivities] = useState([]);

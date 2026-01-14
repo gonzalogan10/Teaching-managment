@@ -1,6 +1,11 @@
 import { useState } from "react";
 import "./ComponentsStyle.css";
 
+/**
+ * CriterionFilter component provides UI to filter a list of criteria
+ * based on category and name substring. It calls the onFilterChange prop
+ * with the filtered list whenever the filter changes.
+ */
 function CriterionFilter(props) {
     // props: criteria (array), onFilterChange (callback with filtered criteria)
     const [filterCategory, setFilterCategory] = useState("");

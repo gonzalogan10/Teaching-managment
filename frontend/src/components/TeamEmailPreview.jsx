@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 
 const API_BASE = "http://localhost:8080/api";
 
+/**
+ * 
+ * Method to fetch email preview for a specific team.
+ * @param {number} teamId - The ID of the team to fetch the email preview for.
+ * @returns {Promise<Object>} - A promise that resolves to the email preview data.
+ * Promise means several asynchronous operations that will complete in the future. 
+ * It allows us to handle operations that take time, like fetching data from a server, without blocking the rest of the code from running.
+ */
 async function getTeamEmailPreview(teamId) {
   const response = await fetch(
     `${API_BASE}/email-previews/team/${teamId}`,
@@ -15,6 +23,10 @@ async function getTeamEmailPreview(teamId) {
   return response.json();
 }
 
+/**
+ * TeamEmailPreview component displays a preview of emails for team members.
+ * It fetches the preview data from the backend and allows copying email bodies to clipboard.
+ */
 function TeamEmailPreview({ teamId, onClose }) {
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState(null);

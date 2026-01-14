@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 
+/**
+ * EvaluationList component displays saved evaluations for a specific team and activity.
+ * It groups assessments by criterion and shows individual student assessments
+ */
 function EvaluationList({ teamId, activityId, criteria, refreshTrigger }) {
   const [assessments, setAssessments] = useState([]);
   const [loading, setLoading] = useState(false);

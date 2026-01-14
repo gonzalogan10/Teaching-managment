@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import "./ComponentsStyle.css";
 
+/**
+ * 
+ * EvaluationForm component allows teachers to evaluate a team based on a specific criterion.
+ * It supports both PER_STUDENT and PER_TEAM evaluation methods.
+ * The form fetches existing evaluations and team members, and allows saving or updating evaluations.
+ * It handles point redistribution rules and provides feedback messages.
+ */
 function EvaluationForm(props) {
   // For PER_STUDENT evaluations
   const [studentPoints, setStudentPoints] = useState({}); // { studentId: points }

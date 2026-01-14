@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/activities")
+@RestController 
+@RequestMapping("/api/activities") 
 public class ActivityController {
 
     private final ActivityService service;

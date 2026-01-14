@@ -1,12 +1,18 @@
 import { useState } from "react";
 import "./ComponentsStyle.css";
 
+/**
+ * This function component allows teachers to create new activities for a specific course.
+ * It includes a form with fields for the activity name and type, and handles form submission
+ * to create the activity via a POST request to the backend API. 
+ */
 function ActivityCreator({ courseId, onActivityCreated }) {
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState("");
   const [type, setType] = useState("LECTURE");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); 
 
+  //types of activities
   const activityTypes = [
     { value: "LECTURE", label: "📚 Lecture" },
     { value: "PROJECT", label: "📊 Project" },

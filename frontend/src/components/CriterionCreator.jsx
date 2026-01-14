@@ -1,6 +1,13 @@
 import { useState } from "react";
 import "./ComponentsStyle.css";
 
+/**
+ * CriterionCreator component allows teachers to create new evaluation criteria.
+ * It includes a form with fields for category, name, checking procedure, evaluation method,
+ * max points, points redistribution option, and default feedback.
+ * On submission, it sends a POST request to the backend API to create the criterion.
+ * Upon successful creation, it resets the form and notifies the parent component via onCriterionCreated prop.
+ */
 function CriterionCreator({ onCriterionCreated }) {
   const [showForm, setShowForm] = useState(false);
   const [category, setCategory] = useState("");

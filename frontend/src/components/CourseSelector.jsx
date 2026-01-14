@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 //useEffect when using directly, useState for a value that changes over time
 
+/**
+ * 
+ * Selector component to choose a course from a list of available courses.
+ * It fetches the list of courses from the backend API and populates a dropdown select element.
+ */
 function CourseSelector(courseProps) {
   const [courses, setCourses] = useState([]);
   const [selectedValue, setSelectedValue] = useState("");

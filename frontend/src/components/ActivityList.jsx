@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 
+/**
+ * ActivityList component fetches and displays a list of activities for a given course.
+ * It allows selecting an activity and deleting activities. 
+ */
 function ActivityList({ courseId, onActivitySelect, selectedActivityId, onActivityDeleted, refreshTrigger }) {
 const [activities, setActivities] = useState([]);
 const [error, setError] = useState(null);

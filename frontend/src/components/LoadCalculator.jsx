@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 
-function LoadCalculator({ activityId, selectedSolverId, refreshTrigger }) {
+/**
+ * LoadCalculator component fetches and displays load calculation details for a specific activity.
+ * It shows total hours, total students, total proportion, and detailed reports from solvers.
+ * Users can toggle the visibility of the load details panel. 
+ * It handles loading states and error messages during data fetching.
+ */
+function LoadCalculator({ activityId, refreshTrigger }) {
   const [load, setLoad] = useState(null);
   const [reports, setReports] = useState([]);
   const [showDetails, setShowDetails] = useState(false);

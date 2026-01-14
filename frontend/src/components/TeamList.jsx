@@ -4,6 +4,13 @@ import "./ComponentsStyle.css";
 //forwardRef is used to pass a ref from a parent component to a child component.
 //It is needed here since the parent component (ActivityScreen) needs to call a function in the child component 
 //(TeamList) to refresh the list of teams after creating a new team.
+
+/**
+ * TeamList component displays a list of teams for a given course.
+ * It allows selecting a team, adding members, and deleting teams.
+ * It also exposes a method to refresh the list of teams to the parent component via ref.
+ * Upon selecting a team, it notifies the parent component via onTeamSelect prop.
+ */
 const TeamList = forwardRef(function TeamList({ courseId, onTeamSelect, selectedTeamId }, ref) {
   const [teams, setTeams] = useState([]);
   const [students, setStudents] = useState([]);
