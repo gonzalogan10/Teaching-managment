@@ -124,13 +124,13 @@ function EvaluationScreen() {
         },
         credentials: 'include'
       })
-        .then(response => response.json()) 
+        .then(response => response.json())
         // Fetch evaluations for the selected team and then update totals
         .then(data => {
           const newTotals = {};
           if (Array.isArray(data) && data.length > 0) {
             //this if condition checks if the data is an array and has at least one element.
-  
+
             const teamSize = data[0].teamSize || 1;
             // Sum all points per criterion (each member has the same points)
             data.forEach(assessment => {
@@ -160,9 +160,9 @@ function EvaluationScreen() {
         const forms = [];
         for (let i = 0; i < filteredCriteria.length; i++) {
             const crit = filteredCriteria[i];
-            forms.push( 
+            forms.push(
                 <EvaluationForm
-                    onSaved={handleEvaluationSaved} 
+                    onSaved={handleEvaluationSaved}
                     key={crit.id}
                     team={selectedTeam}
                     activity={selectedActivity}
@@ -241,7 +241,7 @@ function EvaluationScreen() {
         </div>
       )}
 
-     
+
 
     </div>
   );
