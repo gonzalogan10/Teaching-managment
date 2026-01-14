@@ -15,6 +15,8 @@ public class Assessment {
     @ManyToOne(optional = false)
     private TeamMembership membership;
 
+    private Long activityId; // To filter evaluations by activity
+
     private Double points;
 
     @Column(length = 2000)
@@ -51,6 +53,14 @@ public class Assessment {
 
     public void setTeamMembership(TeamMembership membership) {
         this.membership = membership;
+    }
+
+    public Long getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Long activityId) {
+        this.activityId = activityId;
     }
 
     public Double getPoints() {

@@ -26,7 +26,7 @@ public class Criterion {
     private double maxPoints;
 
     @Column(nullable = false)
-    private boolean pointsRedistribution;
+    private Boolean pointsRedistribution = false;
 
     @Column(length = 2000)
     private String defaultFeedback;
@@ -37,13 +37,13 @@ public class Criterion {
 
     public Criterion(String category, String name, String checkingProcedure, 
                      EvaluationMethod evaluationMethod, double maxPoints, 
-                     boolean pointsRedistribution, String defaultFeedback) {
+                     Boolean pointsRedistribution, String defaultFeedback) {
         this.category = category;
         this.name = name;
         this.checkingProcedure = checkingProcedure;
         this.evaluationMethod = evaluationMethod;
         this.maxPoints = maxPoints;
-        this.pointsRedistribution = pointsRedistribution;
+        this.pointsRedistribution = pointsRedistribution != null ? pointsRedistribution : false;
         this.defaultFeedback = defaultFeedback;
     }
 
@@ -97,11 +97,11 @@ public class Criterion {
     }
 
     public boolean isPointsRedistribution() {
-        return pointsRedistribution;
+        return pointsRedistribution != null ? pointsRedistribution : false;
     }
 
-    public void setPointsRedistribution(boolean pointsRedistribution) {
-        this.pointsRedistribution = pointsRedistribution;
+    public void setPointsRedistribution(Boolean pointsRedistribution) {
+        this.pointsRedistribution = pointsRedistribution != null ? pointsRedistribution : false;
     }
 
     public String getDefaultFeedback() {

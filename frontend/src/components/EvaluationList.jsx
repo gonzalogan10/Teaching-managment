@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import "./ComponentsStyle.css";
 
-function EvaluationList({ teamId, criteria, refreshTrigger }) {
+function EvaluationList({ teamId, activityId, criteria, refreshTrigger }) {
   const [assessments, setAssessments] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!teamId) return;
+    if (!teamId || !activityId) return;
 
     setLoading(true);
-    fetch(`http://localhost:8080/api/evaluations/team/${teamId}`, {
+    fetch(`http://localhost:8080/api/evaluations/team/${teamId}/activity/${activityId}`, {
       method: "GET",
       headers: {
         "Authorization": "Basic " + btoa("teacher1:test"),
@@ -30,7 +30,7 @@ function EvaluationList({ teamId, criteria, refreshTrigger }) {
         setAssessments([]);
       })
       .finally(() => setLoading(false));
-  }, [teamId, refreshTrigger]);
+  }, [teamId, activityId, refreshTrigger]);
 
   // Get criterion name by id
   const getCriterionName = (criterionId) => {

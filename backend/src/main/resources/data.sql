@@ -130,20 +130,20 @@ INSERT INTO criterion
 (id, category, name, checking_procedure,
  evaluation_method, max_points, points_redistribution, default_feedback)
 SELECT
-1, 'Documentation', 'Structure', 'Check structure',
+1000, 'Documentation', 'Structure', 'Check structure',
 'PER_TEAM', 20, false, ''
 WHERE NOT EXISTS (
-    SELECT 1 FROM criterion WHERE id = 1
+    SELECT 1 FROM criterion WHERE id = 1000
 );
 
 INSERT INTO criterion
 (id, category, name, checking_procedure,
  evaluation_method, max_points, points_redistribution, default_feedback)
 SELECT
-2, 'Contribution', 'Activity', 'Check activity',
+1001, 'Contribution', 'Activity', 'Check activity',
 'PER_STUDENT', 10, false, ''
 WHERE NOT EXISTS (
-    SELECT 1 FROM criterion WHERE id = 2
+    SELECT 1 FROM criterion WHERE id = 1001
 );
 
 -- SOLVERS

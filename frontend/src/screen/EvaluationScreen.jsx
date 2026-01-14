@@ -4,6 +4,7 @@ import CourseSelector from "../components/CourseSelector";
 import ActivitySelector from "../components/ActivitySelector";
 import TeamSelector from "../components/TeamSelector";
 import CriterionFilter from "../components/CriterionFilter";
+import CriterionCreator from "../components/CriterionCreator";
 import EvaluationForm from "../components/EvaluationForm";
 import EvaluationList from "../components/EvaluationList";
 import LoadCalculator from "../components/LoadCalculator";
@@ -17,6 +18,7 @@ function EvaluationScreen() {
   const [filteredCriteria, setFilteredCriteria] = useState([]);
   const [totalsByCriterion, setTotalsByCriterion] = useState({});
   const [evaluationRefresh, setEvaluationRefresh] = useState(0);
+  const [criteriaRefresh, setCriteriaRefresh] = useState(0);
   const navigate = useNavigate();
 
   // Reset activity and team when course changes
@@ -69,12 +71,20 @@ function EvaluationScreen() {
     setTotalsByCriterion(updated);
   }
 
+  // Handle new criterion creation
+  function handleCriterionCreated(newCriterion) {
+    // Add the new criterion to the existing list
+    setCriteria(prevCriteria => [...prevCriteria, newCriterion]);
+    setFilteredCriteria(prevFiltered => [...prevFiltered, newCriterion]);
+  }
+
   // Trigger evaluation list refresh when form saves
   function handleEvaluationSaved() {
+    console.log('Evaluation saved, refreshing data for team:', selectedTeam?.id, 'activity:', selectedActivity?.id);
     setEvaluationRefresh(evaluationRefresh + 1);
-    // Load assessments to update totals
-    if (selectedTeam?.id) {
-      fetch(`http://localhost:8080/api/evaluations/team/${selectedTeam.id}`, {
+    // Load assessments to update totals - filtered by activity
+    if (selectedTeam?.id && selectedActivity?.id) {
+      fetch(`http://localhost:8080/api/evaluations/team/${selectedTeam.id}/activity/${selectedActivity.id}`, {
         method: "GET",
         headers: {
           "Authorization": "Basic " + btoa("teacher1:test"),
@@ -82,41 +92,47 @@ function EvaluationScreen() {
         },
         credentials: 'include'
       })
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to fetch assessments');
+          return response.json();
+        })
         .then(data => {
+          console.log('Assessments after save:', data);
           // Update totals based on saved assessments
           const newTotals = {};
           if (Array.isArray(data) && data.length > 0) {
             const teamSize = data[0].teamSize || 1;
-            // Sum all points per criterion (each member has the same points)
+            // Sum all points per criterion (can be different for each member in PER_STUDENT)
             data.forEach(assessment => {
               const criterionId = assessment.criterionId;
               if (criterionId) {
                 if (!newTotals[criterionId]) {
                   newTotals[criterionId] = { team: 0, studentsSum: 0 };
                 }
+                // Add points (works for both PER_STUDENT and PER_TEAM)
                 newTotals[criterionId].studentsSum += (assessment.points || 0);
               }
             });
-            // Team = total sum, Students = sum / teamSize (points per student)
+            // Team = total sum, Students = average per student
             Object.keys(newTotals).forEach(criterionId => {
               const totalSum = newTotals[criterionId].studentsSum;
               newTotals[criterionId].team = totalSum;
               newTotals[criterionId].studentsSum = totalSum / teamSize;
             });
           }
+          console.log('Updated totals:', newTotals);
           setTotalsByCriterion(newTotals);
         })
         .catch(error => console.error("Error fetching assessments:", error));
     }
   }
 
-  // When team changes, load existing evaluations
+  // When team changes, load existing evaluations for the current activity
   const handleTeamChange = (team) => {
     setSelectedTeam(team);
-    // Load existing assessments to show totals
-    if (team?.id) {
-      fetch(`http://localhost:8080/api/evaluations/team/${team.id}`, {
+    // Load existing assessments to show totals - filtered by activity
+    if (team?.id && selectedActivity?.id) {
+      fetch(`http://localhost:8080/api/evaluations/team/${team.id}/activity/${selectedActivity.id}`, {
         method: "GET",
         headers: {
           "Authorization": "Basic " + btoa("teacher1:test"),
@@ -132,7 +148,7 @@ function EvaluationScreen() {
             //this if condition checks if the data is an array and has at least one element.
 
             const teamSize = data[0].teamSize || 1;
-            // Sum all points per criterion (each member has the same points)
+            // Sum all points per criterion (can be different for each member in PER_STUDENT)
             data.forEach(assessment => {
               const criterionId = assessment.criterionId;
               if (criterionId) {
@@ -142,7 +158,7 @@ function EvaluationScreen() {
                 newTotals[criterionId].studentsSum += (assessment.points || 0);
               }
             });
-            // Team = total sum, Students = sum / teamSize (points per student)
+            // Team = total sum, Students = average per student
             Object.keys(newTotals).forEach(criterionId => {
               const totalSum = newTotals[criterionId].studentsSum;
               newTotals[criterionId].team = totalSum;
@@ -152,6 +168,8 @@ function EvaluationScreen() {
           setTotalsByCriterion(newTotals);
         })
         .catch(error => console.error("Error fetching assessments:", error));
+    } else {
+      setTotalsByCriterion({});
     }
   };
 
@@ -197,6 +215,11 @@ function EvaluationScreen() {
       <h1>Evaluate teams</h1>
 
       <div className="evaluation-screen-section">
+        <h3>Create Evaluation Criteria</h3>
+        <CriterionCreator onCriterionCreated={handleCriterionCreated} />
+      </div>
+
+      <div className="evaluation-screen-section">
         <h3>Course</h3>
         <CourseSelector onSelect={handleCourseChange} />
       </div>
@@ -233,7 +256,7 @@ function EvaluationScreen() {
 
       {selectedTeam && selectedActivity && (
         <div className="evaluation-screen-section">
-          <EvaluationList teamId={selectedTeam?.id} criteria={criteria} refreshTrigger={evaluationRefresh} />
+          <EvaluationList teamId={selectedTeam?.id} activityId={selectedActivity?.id} criteria={criteria} refreshTrigger={evaluationRefresh} />
           {renderForms()}
 
           {/* Calculadora de carga de trabajo */}

@@ -623,14 +623,47 @@
 }
 
 .evaluation-already-evaluated {
-  background-color: #e8f5e9;
-  color: #2e7d32;
   padding: 8px 12px;
   border-radius: 4px;
   margin-bottom: 10px;
   font-weight: bold;
   font-size: 0.9em;
   border-left: 4px solid #4CAF50;
+}
+
+.evaluation-already-evaluated.editable {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-left: 4px solid #4CAF50;
+}
+
+.evaluation-already-evaluated.locked {
+  background-color: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #f44336;
+}
+
+.evaluation-students-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 15px 0;
+  padding: 12px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  border: 1px solid #eee;
+}
+
+.evaluation-student-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.evaluation-student-row label {
+  min-width: 150px;
+  font-weight: 500;
+  color: #333;
 }
 
 .evaluation-points-given {
@@ -640,6 +673,12 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+.evaluation-student-row .evaluation-points-given {
+  margin-top: 0;
+  flex: 1;
+  max-width: 150px;
 }
 
 .evaluation-feedback {
@@ -1194,4 +1233,111 @@
   color: #999;
   padding: 20px;
   font-style: italic;
+}
+
+/* CriterionCreator Styles */
+.criterion-container {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f3e5f5;
+  border-radius: 4px;
+}
+
+.criterion-creator-toggle-button {
+  padding: 10px 20px;
+  background-color: #9c27b0;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.criterion-creator-toggle-button:hover {
+  background-color: #7b1fa2;
+}
+
+.criterion-creator-form {
+  margin-top: 15px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.criterion-creator-form h4 {
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.criterion-creator-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+.criterion-creator-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  font-size: 0.95em;
+}
+
+.criterion-creator-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.checkbox-label input {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.criterion-creator-submit-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.criterion-creator-submit-button:hover {
+  background-color: #45a049;
+}
+
+.criterion-creator-submit-button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
 }
