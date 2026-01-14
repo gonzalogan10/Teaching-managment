@@ -27,7 +27,9 @@ function TaskCreator({ activityId, onTaskCreated }) {
     }));
   };
 
+  
   const handleCreateTask = () => {
+    // Validate input
     if (!formData.title.trim()) {
       alert("Please enter a task title");
       return;
@@ -51,6 +53,8 @@ function TaskCreator({ activityId, onTaskCreated }) {
       })
     })
       .then(response => {
+        //response.ok checks if the response status is in the range 200-299, indicating a successful request.
+        //This range means that the request was successfull. It is a standard way to check if a request was successful in HTTP.
         if (!response.ok) throw new Error('Failed to create task');
         return response.json();
       })

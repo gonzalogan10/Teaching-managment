@@ -2,11 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import './Screen.css';
 
 function MenuScreen() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
+  // useNavigate makes it possible to navigate between different screens in the application
 
   return (
     <div>
-      <button className="go-to-page-button home" onClick={() => navigate('/')}>
+      <button className="go-to-page-button" onClick={() => navigate('/')}>
         Back to Home
       </button>
       <div className="menu-container">

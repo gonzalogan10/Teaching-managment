@@ -6,6 +6,7 @@ import ActivityList from "../components/ActivityList.jsx";
 import TaskCreator from "../components/TaskCreator.jsx";
 import TaskList from "../components/TaskList.jsx";
 import TaskReport from "../components/TaskReport.jsx";
+import LoadCalculator from "../components/LoadCalculator.jsx";
 import TeamCreator from "../components/TeamCreator.jsx";
 import TeamList from "../components/TeamList.jsx";
 import './Screen.css';
@@ -27,6 +28,7 @@ function ActivityScreen() {
     setSelectedTeamId(null);
   }, [courseId]);
 
+  // Reset task when activity changes
   const handleTeamCreated = () => {
     if (teamListRef.current) {
       teamListRef.current.refreshTeams();
@@ -46,7 +48,7 @@ function ActivityScreen() {
   return (
     <div>
 
-      <button className="go-to-page-button menu" onClick={() => navigate('/menu')}>
+      <button className="go-to-page-button" onClick={() => navigate('/menu')}>
         Back to Menu
       </button>
 
@@ -58,7 +60,7 @@ function ActivityScreen() {
       </div>
 
       {courseId && (
-        <div className="activity-screen-course-details">
+        <div className="details">
           <h3>Selected Course</h3>
           <p><strong>ID:</strong> {courseId}</p>
         </div>
@@ -84,6 +86,7 @@ function ActivityScreen() {
           <TaskCreator activityId={selectedActivityId} onTaskCreated={handleTaskCreated} />
           <TaskList activityId={selectedActivityId} onTaskSelect={setSelectedTaskId} selectedTaskId={selectedTaskId} refreshTrigger={taskListRefresh} />
           {selectedTaskId && <TaskReport courseId={courseId} taskId={selectedTaskId} />}
+          <LoadCalculator activityId={selectedActivityId} />
         </div>
       )}
     </div>

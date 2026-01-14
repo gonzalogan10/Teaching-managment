@@ -19,6 +19,8 @@ function TeamSelector(props) {
       },
       credentials: 'include'
     })
+      //then parse the response as json. It is necessary to convert the response to json format to be able to work with the data
+      //function () means that the function is anonymous and does not have a name
       .then(function (response) {
         if (!response.ok) throw new Error('Failed to fetch');
         return response.json();
@@ -31,6 +33,7 @@ function TeamSelector(props) {
       });
   }, [props.courseId]);
 
+  // Handle team selection
   function handleSelect(team) {
     if (typeof props.onSelect === 'function') {
       props.onSelect(team);
@@ -39,16 +42,20 @@ function TeamSelector(props) {
 
   return (
     <div className="team-selector">
-      {teams.length === 0 ? <p>No teams</p> : null}
-      {teams.map(t => (
-        <button key={t.id}
-          disabled={!props.enabled}
-          onClick={function () { handleSelect(t); }}
-          className={props.selected?.id === t.id ? 'team-button-selected' : ''}
-        >
-          {t.name}
-        </button>
-      ))}
+      { // === compares both value and type. If both are the same, it returns No teams.
+        teams.length === 0 ? <p>No teams</p> : null}
+
+      {//Map means to iterate over the array of teams and create a button for each team.
+        teams.map(t => (
+          <button key={t.id}
+            disabled={!props.enabled}
+            onClick={function () { handleSelect(t); }}
+            className={props.selected?.id === t.id ? 'team-button-selected' : ''}
+          >
+            {t.name}
+          </button>
+        ))
+      }
     </div>
   );
 }

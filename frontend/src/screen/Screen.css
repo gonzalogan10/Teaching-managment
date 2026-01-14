@@ -70,7 +70,7 @@
   margin-bottom: 20px;
 }
 
-.activity-screen-course-details {
+.details {
   margin-top: 30px;
   padding: 25px;
   background-color: #ffffff;
@@ -79,12 +79,12 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.activity-screen-course-details h3 {
+.details h3 {
   color: #000000;
   margin: 0 0 15px 0;
 }
 
-.activity-screen-course-details p {
+.details p {
   color: #300000;
   font-size: 1.1em;
   margin: 10px 0;
@@ -116,12 +116,12 @@
   padding: 32px;
 }
 
-.menu-panel.left {
+.menu-panel.right {
   background-color: #e94242;
   color: #ffffff;
 }
 
-.menu-panel.right {
+.menu-panel.left {
   background-color: #ffffff;
   color: #111111;
   border-left: 1px solid #f0f0f0;
@@ -133,11 +133,11 @@
   font-weight: 700;
 }
 
-.menu-title.light {
+.menu-title.red {
   color: #ffffff;
 }
 
-.menu-title.dark {
+.menu-title.light {
   color: #e94242;
 }
 
@@ -154,7 +154,7 @@
   max-width: 420px;
 }
 
-.menu-button.white {
+.menu-button.red {
   background-color: #ffffff;
   color: #e94242;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
@@ -164,7 +164,7 @@
   transform: translateY(-1px);
 }
 
-.menu-button.red {
+.menu-button.white {
   background-color: #e94242;
   color: #ffffff;
   box-shadow: 0 2px 6px rgba(233, 66, 66, 0.35);
@@ -174,24 +174,16 @@
   transform: translateY(-1px);
 }
 
-.go-to-page-button.menu {
+.go-to-page-button {
   position: fixed;
   top: 20px;
-  left: 20px;
+  left: 10%;
+  transform: translateX(-50%);
   z-index: 1000;
   background-color: #d80000;
   color: #ffffff;
 }
 
-
-.go-to-page-button.home {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1000;
-  background-color: #0068d8;
-  color: #ffffff;
-}
 
 .go-to-page-button:hover {
   background-color: #cd0c0c;

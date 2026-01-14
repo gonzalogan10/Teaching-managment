@@ -1063,3 +1063,135 @@
   text-align: right;
   font-size: 0.95em;
 }
+
+/* LoadCalculator Styles */
+.load-calculator-container {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.load-calculator-toggle-button {
+  padding: 10px 20px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.load-calculator-toggle-button:hover {
+  background-color: #1976D2;
+}
+
+.load-calculator-panel {
+  margin-top: 15px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.load-calculator-loading {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+}
+
+.load-calculator-error {
+  color: #f44336;
+  padding: 15px;
+  background-color: #ffebee;
+  border-radius: 4px;
+}
+
+.load-calculator-content h4 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 2px solid #2196F3;
+  padding-bottom: 10px;
+}
+
+.load-calculator-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #e3f2fd;
+  border-radius: 4px;
+}
+
+.load-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: white;
+  border-radius: 4px;
+}
+
+.load-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.load-value {
+  color: #2196F3;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.load-calculator-details {
+  margin-top: 20px;
+}
+
+.load-calculator-details h5 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+}
+
+.load-reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.load-report-item {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.load-report-header {
+  background-color: #f5f5f5;
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.load-report-solver {
+  font-weight: bold;
+  color: #333;
+}
+
+.load-report-body {
+  padding: 15px;
+  background-color: white;
+}
+
+.load-report-body p {
+  margin: 8px 0;
+  font-size: 0.95em;
+  color: #555;
+}
+
+.load-no-reports {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+  font-style: italic;
+}

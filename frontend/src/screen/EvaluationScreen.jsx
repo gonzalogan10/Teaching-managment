@@ -6,7 +6,7 @@ import TeamSelector from "../components/TeamSelector";
 import CriterionFilter from "../components/CriterionFilter";
 import EvaluationForm from "../components/EvaluationForm";
 import EvaluationList from "../components/EvaluationList";
-import TotalsPanel from "../components/TotalsCalculator";
+import LoadCalculator from "../components/LoadCalculator";
 import "./Screen.css";
 
 function EvaluationScreen() {
@@ -124,10 +124,13 @@ function EvaluationScreen() {
         },
         credentials: 'include'
       })
-        .then(response => response.json())
+        .then(response => response.json()) 
+        // Fetch evaluations for the selected team and then update totals
         .then(data => {
           const newTotals = {};
           if (Array.isArray(data) && data.length > 0) {
+            //this if condition checks if the data is an array and has at least one element.
+  
             const teamSize = data[0].teamSize || 1;
             // Sum all points per criterion (each member has the same points)
             data.forEach(assessment => {
@@ -157,9 +160,9 @@ function EvaluationScreen() {
         const forms = [];
         for (let i = 0; i < filteredCriteria.length; i++) {
             const crit = filteredCriteria[i];
-            forms.push(
+            forms.push( 
                 <EvaluationForm
-                    onSaved={handleEvaluationSaved}
+                    onSaved={handleEvaluationSaved} 
                     key={crit.id}
                     team={selectedTeam}
                     activity={selectedActivity}
@@ -171,7 +174,20 @@ function EvaluationScreen() {
         return forms;
     }
 
-  return (
+  // Calculate totals
+  let teamTotal = 0;
+  let studentsTotal = 0;
+  for (const key in totalsByCriterion){
+    // Check if the key exists in the object (avoid inherited properties)
+    if (Object.prototype.hasOwnProperty.call(totalsByCriterion, key)) {
+      // Add team points for this criterion to the total
+      teamTotal += totalsByCriterion[key].team || 0;
+      // Add student points for this criterion to the total
+      studentsTotal += totalsByCriterion[key].studentsSum || 0;
+    }
+  }
+
+  return ( //final return that contains the whole screen. Its httml structured and contains all components used in the screen
     <div>
 
       <button className="go-to-page-button" onClick={() => navigate('/menu')}>
@@ -205,14 +221,28 @@ function EvaluationScreen() {
         </div>
       )}
 
+       {selectedTeam && selectedActivity && (function () {
+        return (
+          <div className="details">
+            <h3>Session totals</h3>
+            <p><strong>Team:</strong> {teamTotal}</p>
+            <p><strong>Students:</strong> {studentsTotal.toFixed(2)}</p>
+          </div>
+        );
+      })()}
+
       {selectedTeam && selectedActivity && (
         <div className="evaluation-screen-section">
           <EvaluationList teamId={selectedTeam?.id} criteria={criteria} refreshTrigger={evaluationRefresh} />
           {renderForms()}
+
+          {/* Calculadora de carga de trabajo */}
+          <LoadCalculator activityId={selectedActivity?.id} />
         </div>
       )}
 
-      <TotalsPanel totalsByCriterion={totalsByCriterion} />
+     
+
     </div>
   );
 }

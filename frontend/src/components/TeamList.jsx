@@ -1,6 +1,9 @@
 import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import "./ComponentsStyle.css";
 
+//forwardRef is used to pass a ref from a parent component to a child component.
+//It is needed here since the parent component (ActivityScreen) needs to call a function in the child component 
+//(TeamList) to refresh the list of teams after creating a new team.
 const TeamList = forwardRef(function TeamList({ courseId, onTeamSelect, selectedTeamId }, ref) {
   const [teams, setTeams] = useState([]);
   const [students, setStudents] = useState([]);
@@ -59,6 +62,8 @@ const TeamList = forwardRef(function TeamList({ courseId, onTeamSelect, selected
     fetchStudents();
   }, [courseId]);
 
+  // Expose refreshTeams method to parent via ref, meaning that the parent component can call this function to refresh the list of teams.
+  // Referesh is needed when a new team is created in the parent component.
   useImperativeHandle(ref, () => ({
     refreshTeams: fetchTeams
   }));
@@ -91,6 +96,7 @@ const TeamList = forwardRef(function TeamList({ courseId, onTeamSelect, selected
       });
   };
 
+  // Handle team deletion and creation
   const handleDeleteTeam = (teamId) => {
     if (window.confirm("Are you sure you want to delete this team?")) {
       fetch(`http://localhost:8080/api/teams/${teamId}`, {
