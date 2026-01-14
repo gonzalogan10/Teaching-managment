@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./ComponentsStyle.css";
 
-function TaskReport({ courseId, taskId }) {
+function TaskReport({ courseId, taskId, onReportCreated }) {
   const [showReportForm, setShowReportForm] = useState(false);
   const [solvers, setSolvers] = useState([]);
   const [selectedSolverId, setSelectedSolverId] = useState("");
@@ -105,6 +105,10 @@ function TaskReport({ courseId, taskId }) {
         });
         setSelectedSolverId("");
         setShowReportForm(false);
+        // Notify parent component about the new report
+        if (onReportCreated) {
+          onReportCreated();
+        }
       })
       .catch(error => {
         console.error("Error:", error);

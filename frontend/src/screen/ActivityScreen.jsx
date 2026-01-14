@@ -18,6 +18,7 @@ function ActivityScreen() {
   const [selectedTeamId, setSelectedTeamId] = useState(null);
   const [taskListRefresh, setTaskListRefresh] = useState(0);
   const [activityListRefresh, setActivityListRefresh] = useState(0);
+  const [loadCalculatorRefresh, setLoadCalculatorRefresh] = useState(0);
   const teamListRef = useRef(null);
   const navigate = useNavigate();
 
@@ -43,6 +44,11 @@ function ActivityScreen() {
   const handleActivityCreated = () => {
     // Trigger ActivityList to refresh
     setActivityListRefresh(prev => prev + 1);
+  };
+
+  const handleReportCreated = () => {
+    // Trigger LoadCalculator to refresh
+    setLoadCalculatorRefresh(prev => prev + 1);
   };
 
   return (
@@ -85,8 +91,8 @@ function ActivityScreen() {
         <div className="activity-screen-tasks-section">
           <TaskCreator activityId={selectedActivityId} onTaskCreated={handleTaskCreated} />
           <TaskList activityId={selectedActivityId} onTaskSelect={setSelectedTaskId} selectedTaskId={selectedTaskId} refreshTrigger={taskListRefresh} />
-          {selectedTaskId && <TaskReport courseId={courseId} taskId={selectedTaskId} />}
-          <LoadCalculator activityId={selectedActivityId} />
+          {selectedTaskId && <TaskReport courseId={courseId} taskId={selectedTaskId} onReportCreated={handleReportCreated} />}
+          <LoadCalculator activityId={selectedActivityId} refreshTrigger={loadCalculatorRefresh} />
         </div>
       )}
     </div>
